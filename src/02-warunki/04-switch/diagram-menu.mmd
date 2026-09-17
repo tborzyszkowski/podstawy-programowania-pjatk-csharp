@@ -1,0 +1,12 @@
+flowchart TD
+    A([Start]) --> B[/Wczytaj komendę/]
+    B --> C{switch komenda}
+    C -->|saldo| D[/Wypisz saldo/]
+    C -->|wypłata| E{kwota <= saldo?}
+    E -- Tak --> F[Pomniejsz saldo]
+    E -- Nie --> G[Odmów wypłaty]
+    C -->|inna| H[Wypisz błąd]
+    D --> I([Koniec])
+    F --> I
+    G --> I
+    H --> I

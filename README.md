@@ -13,6 +13,8 @@ Materiały do zajęć z Podstaw Programowania na PJATK w Gdańsku.
 
 Pierwszy moduł kursu znajduje się w katalogu [src/01-wprowadzenie](src/01-wprowadzenie/README.md). Prowadzi od pojęcia algorytmu do pierwszych obliczeń, debugowania i sprawdzania poprawności programu.
 
+Drugi moduł znajduje się w katalogu [src/02-warunki](src/02-warunki/README.md) i poświęcony jest wyborowi kolejnych instrukcji wykonywanych przez program.
+
 Każdy temat zawiera:
 
 - osobny plik `README.md` przeznaczony do wykorzystania na wykładzie i laboratorium,

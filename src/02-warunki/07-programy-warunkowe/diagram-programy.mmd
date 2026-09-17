@@ -1,0 +1,9 @@
+flowchart TD
+    A([Wejście]) --> B[Walidacja]
+    B --> C{Dane poprawne?}
+    C -- Nie --> D[Komunikat błędu]
+    C -- Tak --> E[Wybór wariantu]
+    E --> F[Obliczenie lub klasyfikacja]
+    F --> G[Wspólne wyjście]
+    D --> H([Koniec])
+    G --> H

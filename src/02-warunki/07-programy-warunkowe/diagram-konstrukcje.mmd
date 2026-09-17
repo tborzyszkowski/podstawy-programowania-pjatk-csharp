@@ -1,0 +1,7 @@
+flowchart LR
+    I[if] --> N[Warianty zależne od warunków]
+    S[switch] --> M[Warianty znanej wartości]
+    T[?:] --> V[Jedna z dwóch wartości]
+    N --> P[Program wielowariantowy]
+    M --> P
+    V --> P

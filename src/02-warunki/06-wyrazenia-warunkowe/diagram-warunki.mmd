@@ -1,0 +1,10 @@
+flowchart TD
+    A[Wartości] --> B[Porównanie]
+    B --> C[bool]
+    C --> D{Połączenie logiczne}
+    D -->|AND| E[Wszystkie warunki]
+    D -->|OR| F[Co najmniej jeden]
+    D -->|NOT| G[Negacja]
+    E --> H[if / switch / ?:]
+    F --> H
+    G --> H

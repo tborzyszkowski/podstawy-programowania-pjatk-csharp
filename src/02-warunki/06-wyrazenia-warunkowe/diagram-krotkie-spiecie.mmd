@@ -1,0 +1,15 @@
+sequenceDiagram
+    participant P as Program
+    participant L as Lewy warunek
+    participant R as Prawy warunek
+    P->>L: oblicz
+    alt && i lewy == false
+        L-->>P: false
+        Note over R: prawa strona nie jest oceniana
+    else || i lewy == true
+        L-->>P: true
+        Note over R: prawa strona nie jest oceniana
+    else wynik nadal nieznany
+        L-->>P: kontynuuj
+        P->>R: oblicz prawą stronę
+    end

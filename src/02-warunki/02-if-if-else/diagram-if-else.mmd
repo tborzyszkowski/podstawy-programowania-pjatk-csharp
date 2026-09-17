@@ -1,0 +1,8 @@
+flowchart TD
+    A([Start]) --> B[/Odczytaj dane/]
+    B --> C{Warunek bool?}
+    C -- Tak --> D[Instrukcje gałęzi true]
+    C -- Nie --> E[Instrukcje gałęzi false]
+    D --> F[Wspólne instrukcje]
+    E --> F
+    F --> G([Koniec])

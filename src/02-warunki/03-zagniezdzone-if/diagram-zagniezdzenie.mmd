@@ -1,0 +1,9 @@
+flowchart TD
+    A([Start]) --> B{Pierwszy warunek?}
+    B -- Nie --> C[Wariant odrzucony]
+    B -- Tak --> D{Drugi warunek?}
+    D -- Nie --> E[Wariant podstawowy]
+    D -- Tak --> F[Wariant wyróżniony]
+    C --> G([Koniec])
+    E --> G
+    F --> G
