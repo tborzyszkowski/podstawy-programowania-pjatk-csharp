@@ -1,0 +1,8 @@
+flowchart LR
+    K[Kod C# i csproj] --> V[Visual Studio]
+    K --> C[Visual Studio Code + C# Dev Kit]
+    K --> D[dotnet CLI]
+    V --> B[Build]
+    C --> B
+    D --> B
+    B --> U[Uruchomienie lub debugowanie]

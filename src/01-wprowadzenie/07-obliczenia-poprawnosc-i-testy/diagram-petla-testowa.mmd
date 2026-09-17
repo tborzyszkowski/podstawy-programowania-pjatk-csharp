@@ -1,0 +1,8 @@
+flowchart LR
+    A[Specyfikacja] --> B[Implementacja]
+    B --> C[Test manualny]
+    C --> D{Wynik zgodny?}
+    D -- Nie --> E[Debugowanie i poprawka]
+    E --> B
+    D -- Tak --> F[Dodaj przypadek brzegowy]
+    F --> C

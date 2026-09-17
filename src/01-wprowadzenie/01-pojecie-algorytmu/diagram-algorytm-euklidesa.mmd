@@ -1,0 +1,12 @@
+flowchart TD
+    A([Start]) --> B[/Wczytaj a, b/]
+    B --> C{a > 0 i b > 0?}
+    C -- Nie --> D[Zgłoś błąd danych]
+    D --> Z([Koniec])
+    C -- Tak --> E{b != 0?}
+    E -- Tak --> F[reszta = a % b]
+    F --> G[a = b]
+    G --> H[b = reszta]
+    H --> E
+    E -- Nie --> I[/Wypisz a jako NWD/]
+    I --> Z

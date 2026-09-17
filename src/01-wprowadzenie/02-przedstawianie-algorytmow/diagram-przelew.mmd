@@ -1,0 +1,13 @@
+flowchart TD
+    A([Start]) --> B[/Odczytaj saldo, kwotę i limit/]
+    B --> C{Dane poprawne?}
+    C -- Nie --> D[Wypisz błąd]
+    D --> Z([Koniec])
+    C -- Tak --> E{kwota > 0?}
+    E -- Nie --> F[Odrzuć przelew]
+    E -- Tak --> G{kwota <= saldo i kwota <= limit?}
+    G -- Nie --> F
+    G -- Tak --> H[saldo = saldo - kwota]
+    H --> I[Zaakceptuj przelew]
+    F --> Z
+    I --> Z

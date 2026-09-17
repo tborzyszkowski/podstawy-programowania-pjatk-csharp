@@ -1,0 +1,8 @@
+stateDiagram-v2
+    [*] --> Nieaktywne
+    Nieaktywne --> Aktywne: aktywuj()
+    Aktywne --> Aktywne: dodajPunkty()
+    Aktywne --> Zablokowane: przekroczono limit
+    Zablokowane --> Aktywne: odblokuj()
+    Aktywne --> [*]: zamknij()
+    Zablokowane --> [*]: zamknij()

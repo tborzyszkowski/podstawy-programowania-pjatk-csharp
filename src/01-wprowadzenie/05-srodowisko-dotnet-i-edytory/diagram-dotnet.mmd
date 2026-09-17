@@ -1,0 +1,8 @@
+flowchart TD
+    S[.NET SDK] --> C[Kompilator C#]
+    S --> L[dotnet CLI]
+    S --> T[Szablony projektów]
+    C --> A[Assembly aplikacji]
+    A --> R[.NET Runtime]
+    R --> B[Biblioteki bazowe]
+    A --> P[Proces programu]

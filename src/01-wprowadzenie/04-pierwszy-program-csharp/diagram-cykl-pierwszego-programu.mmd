@@ -1,0 +1,8 @@
+flowchart LR
+    A[Program.cs] --> B[dotnet build]
+    B --> C{Błędy kompilacji?}
+    C -- Tak --> D[Popraw kod]
+    D --> A
+    C -- Nie --> E[bin/Debug/net9.0]
+    E --> F[dotnet run]
+    F --> G[Proces programu]

@@ -1,0 +1,13 @@
+flowchart TD
+    A[Edytuj kod] --> B[dotnet build]
+    B --> C{Kompilacja udana?}
+    C -- Nie --> D[Odczytaj błąd kompilatora]
+    D --> A
+    C -- Tak --> E[dotnet run]
+    E --> F{Wynik poprawny?}
+    F -- Tak --> G[Dodaj kolejny przypadek testowy]
+    F -- Nie --> H[Ustaw punkt przerwania]
+    H --> I[Śledź zmienne i stos wywołań]
+    I --> J[Znajdź pierwszą błędną zmianę stanu]
+    J --> A
+    G --> E

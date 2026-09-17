@@ -1,0 +1,9 @@
+stateDiagram-v2
+    [*] --> Nieuruchomiony
+    Nieuruchomiony --> Wykonywanie: F5 / dotnet run
+    Wykonywanie --> Zatrzymany: punkt przerwania
+    Zatrzymany --> Zatrzymany: F10 krok dalej
+    Zatrzymany --> Wykonywanie: F5 kontynuuj
+    Zatrzymany --> Zakończony: Shift+F5
+    Wykonywanie --> Zakończony: koniec programu
+    Zakończony --> [*]
