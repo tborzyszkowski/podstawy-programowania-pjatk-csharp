@@ -42,6 +42,82 @@ dotnet run
 
 Debugowanie w Visual Studio Code uruchamia się przez `F5` po zainstalowaniu C# Dev Kit. `F10` przechodzi do następnej instrukcji, a panel Variables pokazuje stan programu. W Visual Studio użyj `F5`, punktu przerwania i okna Locals.
 
+## Przykłady przekrojowe
+
+### Przykład 1: wybór jednej z dwóch ścieżek
+
+```csharp
+Console.Write("Podaj temperaturę: ");
+decimal temperatura = decimal.Parse(Console.ReadLine()!);
+
+if (temperatura < 0)
+{
+    Console.WriteLine("mróz");
+}
+else
+{
+    Console.WriteLine("brak mrozu");
+}
+```
+
+Wersja z walidacją danych znajduje się w [01-diagramy-blokowe-warunkow](01-diagramy-blokowe-warunkow/README.md).
+
+### Przykład 2: wybór wielowariantowy
+
+```csharp
+Console.Write("Wybierz 1, 2 albo 0: ");
+string wybor = Console.ReadLine() ?? "";
+
+switch (wybor)
+{
+    case "1":
+        Console.WriteLine("Start");
+        break;
+    case "2":
+        Console.WriteLine("Stan");
+        break;
+    case "0":
+        Console.WriteLine("Koniec");
+        break;
+    default:
+        Console.WriteLine("Nieznana opcja");
+        break;
+}
+```
+
+Pełny przykład interakcji `switch` z warunkiem `if` znajduje się w [04-switch](04-switch/README.md).
+
+## Zadania przekrojowe
+
+1. Napisz klasyfikator wyniku egzaminu: `0-49` niezaliczony, `50-89` zaliczony, `90-100` bardzo dobry, a pozostałe wartości błędne.
+2. Napisz kalkulator kosztu dostawy z trzema wariantami wartości zamówienia. Użyj `if else if` albo `switch` i uzasadnij wybór.
+3. Napisz walidator trzech boków trójkąta. Najpierw odrzuć dane niedodatnie i niespełniające nierówności trójkąta, potem rozpoznaj trójkąt równoboczny, równoramienny lub różnoboczny.
+
+### Rozwiązania i wyjaśnienia
+
+Warunek zakresu egzaminu można zapisać tak:
+
+```csharp
+if (punkty < 0 || punkty > 100)
+{
+    Console.WriteLine("Błędny zakres");
+}
+else if (punkty < 50)
+{
+    Console.WriteLine("Niezaliczony");
+}
+else if (punkty < 90)
+{
+    Console.WriteLine("Zaliczony");
+}
+else
+{
+    Console.WriteLine("Bardzo dobry");
+}
+```
+
+W zadaniu 2 każdy przedział powinien mieć przypadek graniczny, na przykład dokładnie `200`. W zadaniu 3 walidacja musi poprzedzać klasyfikację, aby nie uznać nieistniejącego trójkąta za poprawny.
+
 ## Źródła
 
 - [if and switch statements - C# reference](https://learn.microsoft.com/dotnet/csharp/language-reference/statements/selection-statements),

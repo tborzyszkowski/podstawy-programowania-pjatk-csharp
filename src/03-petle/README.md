@@ -41,6 +41,64 @@ dotnet run
 
 Visual Studio Code z C# Dev Kit uruchamia debugowanie przez `F5`, a krokowanie przez `F10`. W Visual Studio użyj `F5`, okna Locals i punktu przerwania wewnątrz pętli.
 
+## Przykłady przekrojowe
+
+### Przykład 1: znany zakres
+
+```csharp
+int suma = 0;
+for (int i = 1; i <= 5; i++)
+{
+    suma += i;
+}
+
+Console.WriteLine(suma);
+```
+
+To typowy przypadek dla `for`: liczba iteracji wynika z granic licznika.
+
+### Przykład 2: nieznana liczba danych
+
+```csharp
+int suma = 0;
+int liczba;
+do
+{
+    liczba = int.Parse(Console.ReadLine()!);
+    if (liczba != -1)
+    {
+        suma += liczba;
+    }
+}
+while (liczba != -1);
+
+Console.WriteLine(suma);
+```
+
+Wartość `-1` jest strażnikiem i nie trafia do sumy. Pełne przykłady tego wzorca znajdują się w [05-petla-ze-straznikiem](05-petla-ze-straznikiem/README.md).
+
+## Zadania przekrojowe
+
+1. Oblicz sumę liczb parzystych od `1` do `n` za pomocą `for`.
+2. Napisz program z `while`, który wypisuje kolejne potęgi `2`, dopóki nie przekroczą limitu.
+3. Wypisz trójkąt z gwiazdek z użyciem zagnieżdżonych pętli.
+4. Znajdź pierwszą liczbę podzielną przez `7` i zakończ wyszukiwanie przez `break`.
+5. Wczytuj liczby do strażnika `-1`, pomijaj wartości mniejsze niż `-1` przez `continue`, a następnie wypisz minimum i maksimum.
+
+### Rozwiązania i wyjaśnienia
+
+Rozwiązanie zadania 1:
+
+```csharp
+int suma = 0;
+for (int i = 2; i <= n; i += 2)
+{
+    suma += i;
+}
+```
+
+W zadaniu 3 pętla zewnętrzna wyznacza numer wiersza, a wewnętrzna wypisuje tyle gwiazdek, ile wynosi numer tego wiersza. W zadaniu 5 strażnik kończy pętlę, ale nie jest daną; `continue` pomija tylko błędną wartość i pozwala pobierać kolejne.
+
 ## Źródła
 
 - [Iteration statements - C# reference](https://learn.microsoft.com/dotnet/csharp/language-reference/statements/iteration-statements),
