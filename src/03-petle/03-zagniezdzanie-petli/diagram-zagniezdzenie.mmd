@@ -1,0 +1,10 @@
+flowchart TD
+    A[Wiersz = 1] --> B{Wiersz <= liczbaWierszy?}
+    B -- Nie --> Z([Koniec])
+    B -- Tak --> C[Kolumna = 1]
+    C --> D{Kolumna <= liczbaKolumn?}
+    D -- Tak --> E[Wypisz element]
+    E --> F[Kolumna++]
+    F --> D
+    D -- Nie --> G[Wiersz++]
+    G --> B

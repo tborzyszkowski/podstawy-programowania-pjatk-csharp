@@ -1,0 +1,13 @@
+flowchart TD
+    A([Start]) --> B[/Wczytaj liczbę/]
+    B --> C{Strażnik -1?}
+    C -- Tak --> D{Czy są dane?}
+    D -- Tak --> E[Wypisz statystyki]
+    D -- Nie --> F[Wypisz brak danych]
+    C -- Nie --> G{Liczba >= 0?}
+    G -- Nie --> H[continue]
+    H --> B
+    G -- Tak --> I[Aktualizuj statystyki]
+    I --> B
+    E --> J([Koniec])
+    F --> J

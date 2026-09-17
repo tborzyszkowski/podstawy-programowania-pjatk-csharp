@@ -1,0 +1,10 @@
+flowchart LR
+    A[wiersz = 1] --> B[kolumna = 1]
+    B --> C[wynik = wiersz * kolumna]
+    C --> D[kolumna++]
+    D --> E{Koniec kolumn?}
+    E -- Nie --> C
+    E -- Tak --> F[Nowy wiersz]
+    F --> G{Koniec wierszy?}
+    G -- Nie --> B
+    G -- Tak --> H([Koniec])

@@ -1,0 +1,8 @@
+flowchart LR
+    A[suma = 0, licznik = 0] --> B[Wczytaj wartość]
+    B --> C{Strażnik?}
+    C -- Nie --> D[suma += wartość; licznik++]
+    D --> B
+    C -- Tak --> E{licznik > 0?}
+    E -- Tak --> F[średnia = suma / licznik]
+    E -- Nie --> G[Brak danych]

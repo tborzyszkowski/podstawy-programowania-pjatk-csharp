@@ -1,0 +1,7 @@
+flowchart TD
+    A[/Wczytaj n/] --> B[wynik = 1; pozostalo = n]
+    B --> C{pozostalo > 1?}
+    C -- Tak --> D[wynik *= pozostalo]
+    D --> E[pozostalo--]
+    E --> C
+    C -- Nie --> F[/Wypisz wynik/]

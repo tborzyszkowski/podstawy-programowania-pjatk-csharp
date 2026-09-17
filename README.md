@@ -15,6 +15,8 @@ Pierwszy moduł kursu znajduje się w katalogu [src/01-wprowadzenie](src/01-wpro
 
 Drugi moduł znajduje się w katalogu [src/02-warunki](src/02-warunki/README.md) i poświęcony jest wyborowi kolejnych instrukcji wykonywanych przez program.
 
+Trzeci moduł znajduje się w katalogu [src/03-petle](src/03-petle/README.md) i pokazuje wielokrotne wykonywanie instrukcji w języku C#.
+
 Każdy temat zawiera:
 
 - osobny plik `README.md` przeznaczony do wykorzystania na wykładzie i laboratorium,

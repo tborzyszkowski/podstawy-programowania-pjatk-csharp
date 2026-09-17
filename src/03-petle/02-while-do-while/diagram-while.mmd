@@ -1,0 +1,5 @@
+flowchart TD
+    A([Start]) --> B{Warunek przed ciałem?}
+    B -- Nie --> C([Koniec])
+    B -- Tak --> D[Wykonaj ciało]
+    D --> B

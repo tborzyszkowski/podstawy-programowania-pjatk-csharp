@@ -1,10 +1,10 @@
 flowchart TD
     A([Start]) --> B[/Wczytaj liczbę/]
     B --> C{liczba < 0?}
-    C -- Tak --> D[Wypisz "ujemna"]
+    C -- Tak --> D[Wypisz: ujemna]
     C -- Nie --> E{liczba == 0?}
-    E -- Tak --> F[Wypisz "zero"]
-    E -- Nie --> G[Wypisz "dodatnia"]
+    E -- Tak --> F[Wypisz: zero]
+    E -- Nie --> G[Wypisz: dodatnia]
     D --> H([Koniec])
     F --> H
     G --> H

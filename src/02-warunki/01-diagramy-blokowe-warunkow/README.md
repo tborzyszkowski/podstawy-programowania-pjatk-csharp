@@ -8,8 +8,8 @@ W diagramie blokowym decyzję zapisujemy w rombie. Z rombu wychodzą co najmniej
 flowchart TD
     A([Start]) --> B[/Wczytaj liczbę/]
     B --> C{liczba >= 0?}
-    C -- Tak --> D[Wypisz "nieujemna"]
-    C -- Nie --> E[Wypisz "ujemna"]
+    C -- Tak --> D[Wypisz: nieujemna]
+    C -- Nie --> E[Wypisz: ujemna]
     D --> F([Koniec])
     E --> F
 ```
@@ -24,10 +24,10 @@ Jedna decyzja z trzema wynikami może być zbudowana z dwóch rombów. Najpierw 
 flowchart TD
     A([Start]) --> B[/Wczytaj liczbę/]
     B --> C{liczba < 0?}
-    C -- Tak --> D[Wypisz "ujemna"]
+    C -- Tak --> D[Wypisz: ujemna]
     C -- Nie --> E{liczba == 0?}
-    E -- Tak --> F[Wypisz "zero"]
-    E -- Nie --> G[Wypisz "dodatnia"]
+    E -- Tak --> F[Wypisz: zero]
+    E -- Nie --> G[Wypisz: dodatnia]
     D --> H([Koniec])
     F --> H
     G --> H
@@ -58,8 +58,8 @@ W projekcie `Kod/Temperatura/Program.cs` romb sprawdza, czy temperatura jest mni
 flowchart TD
     A([Start]) --> B[/Wczytaj temperaturę/]
     B --> C{temperatura < 0?}
-    C -- Tak --> D[komunikat = "mróz"]
-    C -- Nie --> E[komunikat = "brak mrozu"]
+    C -- Tak --> D[komunikat = mroz]
+    C -- Nie --> E[komunikat = brak mrozu]
     D --> F[/Wypisz komunikat/]
     E --> F
     F --> G([Koniec])

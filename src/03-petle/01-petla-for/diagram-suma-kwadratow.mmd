@@ -1,0 +1,7 @@
+flowchart LR
+    A[suma = 0] --> B[i = 1]
+    B --> C{i <= n?}
+    C -- Tak --> D[suma = suma + i * i]
+    D --> E[i++]
+    E --> C
+    C -- Nie --> F[Wypisz sumę]

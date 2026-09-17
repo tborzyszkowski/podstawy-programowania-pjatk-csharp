@@ -1,0 +1,6 @@
+flowchart TD
+    A[Nowa iteracja] --> B{Warunek stopu?}
+    B -- Tak --> C[break]
+    C --> D[Instrukcja po pętli]
+    B -- Nie --> E[Wykonaj resztę ciała]
+    E --> A

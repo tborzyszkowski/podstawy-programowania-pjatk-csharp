@@ -1,0 +1,7 @@
+flowchart TD
+    A[Nowa iteracja] --> B{Pomiń ten przypadek?}
+    B -- Tak --> C[continue]
+    C --> D[Warunek lub krok następnej iteracji]
+    B -- Nie --> E[Wykonaj dalsze instrukcje]
+    E --> D
+    D --> A
