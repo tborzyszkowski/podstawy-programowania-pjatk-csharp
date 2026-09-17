@@ -72,6 +72,61 @@ wartosc = "tekst"; // kompilator pozwala, błąd może pojawić się dopiero prz
 
 Nie należy utożsamiać `var` z dynamicznym typowaniem. `var wynik = 10` nadal oznacza statycznie znany typ `int`; `var` tylko pozwala kompilatorowi wywnioskować typ z prawej strony.
 
+### Duck typing - skąd nazwa i o co chodzi?
+
+Nazwa pochodzi od tak zwanego **duck test**, czyli „testu kaczki”: jeżeli coś chodzi jak kaczka, pływa jak kaczka i kwacze jak kaczka, to w praktyce traktujemy to jak kaczkę. Sformułowanie jest zwykle przypisywane amerykańskiemu poecie Jamesowi Whitcombowi Rileyowi, ale źródła historyczne zaznaczają, że jest to atrybucja prawdopodobna, a nie całkowicie pewna. W programowaniu metafora opisuje podejście, w którym nie pytamy przede wszystkim o deklarowaną klasę obiektu, tylko o to, czy obiekt udostępnia wymagane zachowanie.
+
+Oficjalny słownik Pythona opisuje duck typing jako styl, który nie sprawdza typu obiektu, lecz po prostu wywołuje potrzebną metodę lub używa potrzebnego atrybutu. Przykładowe pytanie brzmi więc nie „czy to jest `Kaczka`?”, lecz „czy można na tym wywołać `Kwacz()`?”.
+
+```csharp
+class Kaczka
+{
+    public void Kwacz() => Console.WriteLine("Kwa kwa");
+}
+
+class Robot
+{
+    public void Kwacz() => Console.WriteLine("Robot kwacze");
+}
+
+static void WykonajKwakanie(dynamic obiekt)
+{
+    obiekt.Kwacz();
+}
+
+WykonajKwakanie(new Kaczka());
+WykonajKwakanie(new Robot());
+```
+
+`Kaczka` i `Robot` nie muszą dziedziczyć po wspólnej klasie. Obie klasy przechodzą przez funkcję, bo w chwili wywołania mają publiczną metodę `Kwacz`. Gdyby przekazać obiekt bez tej metody, kompilator nie zgłosiłby błędu w miejscu wywołania `dynamic`; błąd pojawiłby się dopiero podczas działania programu jako wyjątek `RuntimeBinderException`.
+
+Ważne rozróżnienie:
+
+- **duck typing** mówi, że zgodność oceniamy na podstawie używanego zachowania, często dopiero w czasie wykonania,
+- **silne lub słabe typowanie** dotyczy między innymi tego, jak rygorystycznie język traktuje typy i konwersje,
+- te pojęcia nie są synonimami: język może być dynamiczny i jednocześnie silnie typowany, a duck typing opisuje sposób sprawdzania przydatności obiektu.
+
+W C# zwykłe wywołanie metod jest sprawdzane statycznie. C# stosuje przede wszystkim typowanie nominalne: zgodność z kontraktem wynika z deklaracji, na przykład z implementacji interfejsu. Bezpieczniejszym odpowiednikiem przykładu jest jawny interfejs:
+
+```csharp
+interface IKwaczacy
+{
+    void Kwacz();
+}
+
+class Kaczka : IKwaczacy
+{
+    public void Kwacz() => Console.WriteLine("Kwa kwa");
+}
+
+static void WykonajKwakanie(IKwaczacy obiekt)
+{
+    obiekt.Kwacz();
+}
+```
+
+Tutaj kompilator wymaga, aby argument implementował `IKwaczacy`. Interfejs jest jawnym, statycznie sprawdzanym kontraktem, a `dynamic` odracza sprawdzenie istnienia metody do czasu wykonania. Dlatego w typowym kodzie C# interfejs jest preferowany, gdy znamy kontrakt, a `dynamic` pozostaje narzędziem do interoperacyjności, refleksji lub pracy z danymi, których typ nie jest znany podczas kompilacji.
+
 ## Operator przypisania i zmiana stanu
 
 Podstawowe przypisanie to `zmienna = wyrażenie`. Najpierw obliczana jest prawa strona, potem wynik trafia do zmiennej po lewej:
@@ -147,4 +202,8 @@ Ustaw punkt przerwania przed zmianą stanu i krokowo wykonuj program. Notuj tabe
 - [Implicitly typed local variables (`var`)](https://learn.microsoft.com/dotnet/csharp/language-reference/statements/declarations#implicitly-typed-local-variables),
 - [Assignment operators](https://learn.microsoft.com/dotnet/csharp/language-reference/operators/assignment-operator),
 - [Console class](https://learn.microsoft.com/dotnet/api/system.console),
-- [Type testing and cast operators](https://learn.microsoft.com/dotnet/csharp/language-reference/operators/type-testing-and-cast).
+- [Type testing and cast operators](https://learn.microsoft.com/dotnet/csharp/language-reference/operators/type-testing-and-cast),
+- [Using type `dynamic`](https://learn.microsoft.com/dotnet/csharp/advanced-topics/interop/using-type-dynamic),
+- [Interfaces in C#](https://learn.microsoft.com/dotnet/csharp/fundamentals/types/interfaces),
+- [Python glossary: duck typing](https://docs.python.org/3/glossary.html#term-duck-typing),
+- [Duck test - historia powiedzenia](https://en.wikipedia.org/wiki/Duck_test).
