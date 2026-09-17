@@ -42,8 +42,8 @@ Projekt [Kod/Status/Program.cs](Kod/Status/Program.cs) wybiera komunikat na pods
 flowchart TD
     A([Start]) --> B[/Wczytaj punkty/]
     B --> C{punkty >= 50?}
-    C -- Tak --> D[status = "zaliczony"]
-    C -- Nie --> E[status = "niezaliczony"]
+    C -- Tak --> D[status = zaliczony]
+    C -- Nie --> E[status = niezaliczony]
     D --> F[/Wypisz status/]
     E --> F
     F --> G([Koniec])
