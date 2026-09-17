@@ -15,10 +15,10 @@ Program przywita użytkownika po imieniu. Jeśli użytkownik nic nie wpisze, uż
 
 ```mermaid
 flowchart TD
-    A([Start]) --> B[/Napis "Podaj imię"/]
+    A([Start]) --> B[/Napis: Podaj imię/]
     B --> C[/Odczytaj imię/]
     C --> D{Puste?}
-    D -- Tak --> E[imie = "student"]
+    D -- Tak --> E[imie = student]
     D -- Nie --> F[Zachowaj imię]
     E --> G[/Wypisz powitanie/]
     F --> G
