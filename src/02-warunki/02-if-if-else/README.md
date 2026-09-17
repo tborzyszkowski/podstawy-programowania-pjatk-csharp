@@ -34,8 +34,8 @@ Projekt [Kod/Pelnoletnosc/Program.cs](Kod/Pelnoletnosc/Program.cs) pokazuje `if 
 flowchart TD
     A([Start]) --> B[/Wczytaj wiek/]
     B --> C{wiek >= 18?}
-    C -- Tak --> D[komunikat = "pełnoletnia"]
-    C -- Nie --> E[komunikat = "niepełnoletnia"]
+    C -- Tak --> D[komunikat = pełnoletnia]
+    C -- Nie --> E[komunikat = niepełnoletnia]
     D --> F[/Wypisz komunikat/]
     E --> F
     F --> G([Koniec])
