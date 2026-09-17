@@ -1,0 +1,7 @@
+flowchart TD
+    A[/Wczytaj dane/] --> B[Konwersja tekstu do typu liczbowego]
+    B --> C{Dane poprawne?}
+    C -- Nie --> D[Komunikat błędu]
+    C -- Tak --> E[Obliczenia arytmetyczne]
+    E --> F[Porównanie lub klasyfikacja]
+    F --> G[/Wypisz wynik/]

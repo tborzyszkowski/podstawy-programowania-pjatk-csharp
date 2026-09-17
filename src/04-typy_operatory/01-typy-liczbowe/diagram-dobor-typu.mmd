@@ -1,0 +1,10 @@
+flowchart TD
+    A[Problem liczbowy] --> B{Liczba całkowita?}
+    B -- Tak --> C{Zakres int wystarcza?}
+    C -- Tak --> D[int]
+    C -- Nie --> E[long lub BigInteger]
+    B -- Nie --> F{Kwota dziesiętna?}
+    F -- Tak --> G[decimal]
+    F -- Nie --> H{Pamięć ważniejsza niż precyzja?}
+    H -- Tak --> I[float]
+    H -- Nie --> J[double]

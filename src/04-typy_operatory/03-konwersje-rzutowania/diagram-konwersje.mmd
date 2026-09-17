@@ -1,0 +1,7 @@
+flowchart TD
+    A[Wartość źródłowa] --> B{Konwersja bezpieczna?}
+    B -- Tak --> C[Konwersja niejawna]
+    B -- Nie --> D[Rzutowanie jawne]
+    D --> E{Zakres zachowany?}
+    E -- Tak --> F[Wartość docelowa]
+    E -- Nie --> G[Utrata danych lub wyjątek]

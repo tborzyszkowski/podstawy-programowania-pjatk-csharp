@@ -1,0 +1,6 @@
+flowchart TD
+    A[Dane] --> B{Rodzaj wartości?}
+    B -- Jeden znak --> C[char]
+    B -- Tekst --> D[string]
+    B -- Odpowiedź tak/nie --> E[bool]
+    E --> F[if / while / ?:]

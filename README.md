@@ -17,6 +17,8 @@ Drugi moduł znajduje się w katalogu [src/02-warunki](src/02-warunki/README.md)
 
 Trzeci moduł znajduje się w katalogu [src/03-petle](src/03-petle/README.md) i pokazuje wielokrotne wykonywanie instrukcji w języku C#.
 
+Czwarty moduł znajduje się w katalogu [src/04-typy_operatory](src/04-typy_operatory/README.md) i porządkuje typy danych, konwersje oraz operatory języka C#.
+
 Każdy temat zawiera:
 
 - osobny plik `README.md` przeznaczony do wykorzystania na wykładzie i laboratorium,
