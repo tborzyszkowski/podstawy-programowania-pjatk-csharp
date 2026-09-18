@@ -1,7 +1,20 @@
-flowchart TD
-    A[Wartości liczbowe] --> B[Operatory arytmetyczne]
-    B --> C[Nowa wartość liczbowa]
-    C --> D[Porównanie]
-    D --> E[bool]
-    E --> F[Operatory logiczne]
-    F --> G[Warunek programu]
+flowchart LR
+    subgraph obliczenia["1. Obliczenie"]
+        liczba["liczba = 42"] --> reszta["liczba % 2 = 0"]
+    end
+
+    subgraph porownania["2. Porównania"]
+        zakres["liczba >= 0 && liczba <= 100"] --> poprawny["poprawny = true"]
+        reszta --> parzystosc["reszta == 0"]
+        parzystosc --> parzysta["true"]
+    end
+
+    subgraph logika["3. Połączenie logiczne"]
+        poprawny --> koniunkcja["true && true"]
+        parzysta --> koniunkcja
+    end
+
+    liczba --> zakres
+    koniunkcja --> decyzja{"poprawny && parzysty?"}
+    decyzja -- "Tak" --> komunikat["Wypisz: poprawny i parzysty"]
+    decyzja -- "Nie" --> blad["Wypisz: warunek niespełniony"]

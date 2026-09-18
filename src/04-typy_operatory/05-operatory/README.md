@@ -23,15 +23,32 @@ bool rozne = pierwsza != druga;
 
 `&&` oznacza koniunkcję, `||` alternatywę, a `!` negację. Operatory `&&` i `||` stosują krótkie spięcie, więc prawa strona może nie zostać obliczona.
 
+Diagram pokazuje pełną drogę od liczby do decyzji programu. Najpierw operator arytmetyczny oblicza resztę z dzielenia, potem operatory relacyjne tworzą wartości `bool`, a na końcu `&&` łączy dwa warunki w jeden wynik.
+
 ```mermaid
-flowchart TD
-    A[Wartości liczbowe] --> B[Operatory arytmetyczne]
-    B --> C[Nowa wartość liczbowa]
-    C --> D[Porównanie]
-    D --> E[bool]
-    E --> F[Operatory logiczne]
-    F --> G[Warunek programu]
+flowchart LR
+    subgraph obliczenia["1. Obliczenie"]
+        liczba["liczba = 42"] --> reszta["liczba % 2 = 0"]
+    end
+
+    subgraph porownania["2. Porównania"]
+        zakres["liczba >= 0 && liczba <= 100"] --> poprawny["poprawny = true"]
+        reszta --> parzystosc["reszta == 0"]
+        parzystosc --> parzysta["true"]
+    end
+
+    subgraph logika["3. Połączenie logiczne"]
+        poprawny --> koniunkcja["true && true"]
+        parzysta --> koniunkcja
+    end
+
+    liczba --> zakres
+    koniunkcja --> decyzja{"poprawny && parzysty?"}
+    decyzja -- "Tak" --> komunikat["Wypisz: poprawny i parzysty"]
+    decyzja -- "Nie" --> blad["Wypisz: warunek niespełniony"]
 ```
+
+W kodzie warunek parzystości jest zapisany krócej jako `liczba % 2 == 0`; diagram rozbija to wyrażenie na obliczenie reszty (`%`) i porównanie (`==`), aby pokazać typ wyniku każdego kroku.
 
 Źródło: [diagram-operatory.mmd](diagram-operatory.mmd).
 
