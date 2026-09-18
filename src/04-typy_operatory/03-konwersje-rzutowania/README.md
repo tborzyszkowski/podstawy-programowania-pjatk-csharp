@@ -34,7 +34,7 @@ Projekt [Kod/Rzutowanie/Program.cs](Kod/Rzutowanie/Program.cs) pokazuje obcięci
 
 ```mermaid
 flowchart TD
-    A[double = 12.9] --> B[(int)double]
+    A[double = 12.9] --> B["(int) double"]
     B --> C[int = 12]
     D[int.MaxValue] --> E[checked int + 1]
     E --> F[OverflowException]
