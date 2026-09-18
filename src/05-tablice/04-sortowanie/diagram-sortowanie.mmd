@@ -1,0 +1,10 @@
+flowchart TD
+    A[Sortowanie] --> B[Porownaj elementy]
+    B --> C{Zla kolejnosc?}
+    C -- Tak --> D[Zamien lub przesun]
+    C -- Nie --> E[Zachowaj]
+    D --> F[Zmniejsz nieuporzadkowany zakres]
+    E --> F
+    F --> G{Zakres pusty?}
+    G -- Nie --> B
+    G -- Tak --> H[Posortowana tablica]

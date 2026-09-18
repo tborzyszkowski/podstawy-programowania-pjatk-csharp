@@ -1,0 +1,8 @@
+flowchart TD
+    A[Tablica] --> B{Posortowana?}
+    B -- Nie --> C[Wyszukiwanie liniowe]
+    B -- Tak --> D[Wyszukiwanie binarne]
+    C --> E[Sprawdzaj kolejno elementy]
+    D --> F[Odrzucaj połowę przedziału]
+    E --> G[Wynik lub -1]
+    F --> G

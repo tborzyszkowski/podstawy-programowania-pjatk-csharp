@@ -1,0 +1,7 @@
+flowchart TD
+    A[Vector3 punkt] --> B[Matrix4x4.CreateScale]
+    B --> C[Matrix4x4.CreateRotation]
+    C --> D[Matrix4x4.CreateTranslation]
+    D --> E[Macierz złożona]
+    E --> F[Vector3.Transform]
+    F --> G[Nowe współrzędne]
