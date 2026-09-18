@@ -11,13 +11,10 @@ Materiały do zajęć z Podstaw Programowania na PJATK w Gdańsku.
 
 ## Zawartość
 
-Pierwszy moduł kursu znajduje się w katalogu [src/01-wprowadzenie](src/01-wprowadzenie/README.md). Prowadzi od pojęcia algorytmu do pierwszych obliczeń, debugowania i sprawdzania poprawności programu.
-
-Drugi moduł znajduje się w katalogu [src/02-warunki](src/02-warunki/README.md) i poświęcony jest wyborowi kolejnych instrukcji wykonywanych przez program.
-
-Trzeci moduł znajduje się w katalogu [src/03-petle](src/03-petle/README.md) i pokazuje wielokrotne wykonywanie instrukcji w języku C#.
-
-Czwarty moduł znajduje się w katalogu [src/04-typy_operatory](src/04-typy_operatory/README.md) i porządkuje typy danych, konwersje oraz operatory języka C#.
+- **01. Wprowadzenie** - [algorytmy, program i środowisko pracy](src/01-wprowadzenie/README.md): od pojęcia algorytmu do pierwszych obliczeń, debugowania i sprawdzania poprawności programu.
+- **02. Warunki** - [instrukcje wyboru](src/02-warunki/README.md): wybór kolejnych instrukcji wykonywanych przez program.
+- **03. Pętle** - [wielokrotne wykonywanie instrukcji](src/03-petle/README.md): pętle `for`, `while`, `do while`, zagnieżdżanie oraz sterowanie iteracją.
+- **04. Typy i operatory** - [typy danych, konwersje i operatory](src/04-typy_operatory/README.md): dobór reprezentacji danych, konwersje, stałe, operatory i ich priorytety.
 
 Każdy temat zawiera:
 
