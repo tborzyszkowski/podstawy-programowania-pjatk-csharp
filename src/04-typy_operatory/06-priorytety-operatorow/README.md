@@ -18,9 +18,9 @@ flowchart TD
     B --> C[*, /, %]
     C --> D[+, -]
     D --> E[Porównania i ==]
-    E --> F[!]
-    F --> G[&&]
-    G --> H[||]
+    E --> F["!"]
+    F --> G["&&"]
+    G --> H["||"]
     H --> I[Wynik]
 ```
 
@@ -47,8 +47,8 @@ Projekt [Kod/Logika/Program.cs](Kod/Logika/Program.cs) porównuje `a || b && c` 
 
 ```mermaid
 flowchart LR
-    A[a || b && c] --> B[a || (b && c)]
-    C[(a || b) && c] --> D[Zmieniona kolejność]
+    A["a || b && c"] --> B["a || (b && c)"]
+    C["(a || b) && c"] --> D["Zmieniona kolejność"]
 ```
 
 Źródło: [diagram-nawiasy.mmd](diagram-nawiasy.mmd).
