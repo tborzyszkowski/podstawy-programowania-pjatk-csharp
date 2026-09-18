@@ -12,19 +12,64 @@ bool warunek = a > 0 && b > 0 || c > 0;
 
 W arytmetyce `*`, `/` i `%` mają wyższy priorytet niż `+` i `-`. W logice `!` działa przed `&&`, a `&&` przed `||`. Porównania są wykonywane przed operatorami logicznymi.
 
+Diagramy poniżej pokazują **grupowanie fragmentów wyrażenia**, a nie ciąg osobnych instrukcji, który program zawsze wykonuje od góry do dołu. Im wyższy priorytet operatora, tym wcześniej C# wiąże go z operandami. Nawiasy mogą tę kolejność zmienić.
+
+### Mapa modułu
+
 ```mermaid
-flowchart TD
-    A[Wyrażenie] --> B[Operatory jednoargumentowe]
-    B --> C[*, /, %]
-    C --> D[+, -]
-    D --> E[Porównania i ==]
-    E --> F["!"]
-    F --> G["&&"]
-    G --> H["||"]
-    H --> I[Wynik]
+flowchart LR
+    A["1. Arytmetyka"] --> B["2. Porównania"]
+    B --> C["3. Logika boolowska"]
+    C --> D["Wynik wyrażenia"]
 ```
 
 Źródło: [diagram-priorytety.mmd](diagram-priorytety.mmd).
+
+### 1. Arytmetyka: mnożenie przed dodawaniem
+
+```mermaid
+flowchart LR
+    wyrazenie1["2 + 3 * 4"] --> mnozenie["Najpierw: 3 * 4 = 12"]
+    mnozenie --> dodawanie["Potem: 2 + 12 = 14"]
+    wyrazenie2["(2 + 3) * 4"] --> nawias["Nawias: 2 + 3 = 5"]
+    nawias --> mnozeniePoNawiasie["Potem: 5 * 4 = 20"]
+```
+
+Bez nawiasów `*`, `/` i `%` są wiązane przed `+` i `-`. Nawiasy tworzą własną grupę, więc w drugim przykładzie dodawanie jest wykonane przed mnożeniem. Operatory o tym samym priorytecie, na przykład `20 / 5 * 2`, są odczytywane od lewej do prawej.
+
+Źródło: [diagram-priorytet-arytmetyczny.mmd](diagram-priorytet-arytmetyczny.mmd).
+
+### 2. Porównania: liczby stają się wartościami `bool`
+
+```mermaid
+flowchart TD
+    wyrazenie["a > 0 && b > 0 || c > 0"] --> porownania["Najpierw wykonaj porównania"]
+    porownania --> aBool["a > 0 -> bool"]
+    porownania --> bBool["b > 0 -> bool"]
+    porownania --> cBool["c > 0 -> bool"]
+    aBool --> koniunkcja["aBool && bBool"]
+    bBool --> koniunkcja
+    koniunkcja --> alternatywa["(aBool && bBool) || cBool"]
+    cBool --> alternatywa
+```
+
+Operatory `>`, `<`, `>=`, `<=`, `==` i `!=` nie zwracają liczby, tylko `bool`. Dlatego najpierw powstają wartości `aBool`, `bBool` i `cBool`. Dopiero potem `&&` łączy dwa wyniki, a `||` łączy wynik koniunkcji z trzecim warunkiem. To oznacza, że zapis jest równoważny `((a > 0 && b > 0) || c > 0)`.
+
+Źródło: [diagram-priorytet-porownania.mmd](diagram-priorytet-porownania.mmd).
+
+### 3. Logika: `!` przed `&&`, a `&&` przed `||`
+
+```mermaid
+flowchart LR
+    wyrazenie["!gotowy || awaria && online"] --> negacja["Najpierw: !gotowy"]
+    wyrazenie --> koniunkcjaLogiki["Następnie: awaria && online"]
+    negacja --> alternatywaLogiki["Na końcu: !gotowy || (awaria && online)"]
+    koniunkcjaLogiki --> alternatywaLogiki
+```
+
+Operator `!` odwraca jeden `bool`, `&&` wymaga prawdziwości obu stron, a `||` wymaga prawdziwości przynajmniej jednej strony. C# odczyta ten przykład jako `(!gotowy) || (awaria && online)`, nie jako `(!gotowy || awaria) && online`. Gdy intencja nie jest oczywista, nawiasy powinny ją zapisać wprost.
+
+Źródło: [diagram-priorytet-logika.mmd](diagram-priorytet-logika.mmd).
 
 ## Kiedy stosować nawiasy?
 

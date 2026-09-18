@@ -1,0 +1,9 @@
+flowchart TD
+    wyrazenie["a > 0 && b > 0 || c > 0"] --> porownania["Najpierw wykonaj porównania"]
+    porownania --> aBool["a > 0 -> bool"]
+    porownania --> bBool["b > 0 -> bool"]
+    porownania --> cBool["c > 0 -> bool"]
+    aBool --> koniunkcja["aBool && bBool"]
+    bBool --> koniunkcja
+    koniunkcja --> alternatywa["(aBool && bBool) || cBool"]
+    cBool --> alternatywa

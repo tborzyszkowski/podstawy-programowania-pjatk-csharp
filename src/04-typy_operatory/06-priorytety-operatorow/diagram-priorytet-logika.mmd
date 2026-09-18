@@ -1,0 +1,5 @@
+flowchart LR
+    wyrazenie["!gotowy || awaria && online"] --> negacja["Najpierw: !gotowy"]
+    wyrazenie --> koniunkcjaLogiki["Następnie: awaria && online"]
+    negacja --> alternatywaLogiki["Na końcu: !gotowy || (awaria && online)"]
+    koniunkcjaLogiki --> alternatywaLogiki

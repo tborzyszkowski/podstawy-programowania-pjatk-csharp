@@ -1,9 +1,4 @@
-flowchart TD
-    A[Wyrażenie] --> B[Operatory jednoargumentowe]
-    B --> C[*, /, %]
-    C --> D[+, -]
-    D --> E[Porównania i ==]
-    E --> F["!"]
-    F --> G["&&"]
-    G --> H["||"]
-    H --> I[Wynik]
+flowchart LR
+    A["1. Arytmetyka"] --> B["2. Porównania"]
+    B --> C["3. Logika boolowska"]
+    C --> D["Wynik wyrażenia"]
