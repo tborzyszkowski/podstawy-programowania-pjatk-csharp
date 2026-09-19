@@ -59,26 +59,15 @@ $$x' = s_x x, \quad y' = s_y y, \quad z' = s_z z.$$
 
 ### Obrót wokół osi Z
 
-Dla kąta $\theta$ obrót w płaszczyźnie XY ma postać:
+Dla kąta $\theta$ obrót w płaszczyźnie XY opisują równania składowych:
 
-$$
-\begin{bmatrix}
- x' \\
- y' \\
- z'
-\end{bmatrix}
-=
-\begin{bmatrix}
-\cos\theta & -\sin\theta & 0 \\
-\sin\theta & \cos\theta & 0 \\
-0 & 0 & 1
-\end{bmatrix}
-\begin{bmatrix}
- x \\
- y \\
- z
-\end{bmatrix}.
-$$
+$$x' = x\cos\theta - y\sin\theta$$
+
+$$y' = x\sin\theta + y\cos\theta$$
+
+$$z' = z$$
+
+Oznacza to, że obrót wokół osi Z zmienia współrzędne $x$ i $y$, ale pozostawia współrzędną $z$ bez zmian. Dla kąta $90^\circ$ punkt $(1, 0, 0)$ przechodzi w punkt $(0, 1, 0)$, z dokładnością do błędu obliczeń zmiennoprzecinkowych.
 
 W `System.Numerics` nie trzeba przepisywać wzoru ręcznie:
 
