@@ -6,7 +6,7 @@ Macierz zapisana jako `double[,]` jest tablicą danych z dwoma indeksami. W prog
 
 ### Sumy wierszy i kolumn
 
-Dla macierzy `r x c` suma wiersza wymaga przejścia po `c` kolumnach, a suma kolumny po `r` wierszach. Jedno przejście po wszystkich elementach ma koszt $O(r \\cdot c)$.
+Dla macierzy `r x c` suma wiersza wymaga przejścia po `c` kolumnach, a suma kolumny po `r` wierszach. Jedno przejście po wszystkich elementach ma koszt $O(r \cdot c)$.
 
 ```csharp
 static int[] SumyWierszy(int[,] macierz)
@@ -31,9 +31,9 @@ Transpozycja zamienia pozycję `[wiersz, kolumna]` na `[kolumna, wiersz]`. Dla p
 
 Jeżeli `A` ma rozmiar `r x k`, a `B` ma rozmiar `k x c`, wynik `C` ma rozmiar `r x c`. Element:
 
-$$C_{i,j} = \\sum_{t=0}^{k-1} A_{i,t} B_{t,j}.$$
+$$C_{i,j} = \sum_{t=0}^{k-1} A_{i,t} B_{t,j}.$$
 
-W C# oznacza to trzy zagnieżdżone pętle. Warunkiem poprawności jest zgodność liczby kolumn `A` z liczbą wierszy `B`. Naiwna implementacja ma koszt $O(r \\cdot k \\cdot c)$.
+W C# oznacza to trzy zagnieżdżone pętle. Warunkiem poprawności jest zgodność liczby kolumn `A` z liczbą wierszy `B`. Naiwna implementacja ma koszt $O(r \cdot k \cdot c)$.
 
 ### Sąsiedztwo i filtr obrazu
 
@@ -55,29 +55,29 @@ Punkt w przestrzeni zapisujemy jako `Vector3`, na przykład `(x, y, z)`. Typ `Ma
 
 Skalowanie przez `(sx, sy, sz)` zmienia punkt zgodnie z:
 
-$$x' = s_x x, \\quad y' = s_y y, \\quad z' = s_z z.$$
+$$x' = s_x x, \quad y' = s_y y, \quad z' = s_z z.$$
 
 ### Obrót wokół osi Z
 
-Dla kąta $\\theta$ obrót w płaszczyźnie XY ma postać:
+Dla kąta $\theta$ obrót w płaszczyźnie XY ma postać:
 
 $$
-\\begin{bmatrix}
- x' \\\\
- y' \\\\
+\begin{bmatrix}
+ x' \\
+ y' \\
  z'
-\\end{bmatrix}
+\end{bmatrix}
 =
-\\begin{bmatrix}
-\\cos\\theta & -\\sin\\theta & 0 \\\\
-\\sin\\theta & \\cos\\theta & 0 \\\\
+\begin{bmatrix}
+\cos\theta & -\sin\theta & 0 \\
+\sin\theta & \cos\theta & 0 \\
 0 & 0 & 1
-\\end{bmatrix}
-\\begin{bmatrix}
- x \\\\
- y \\\\
+\end{bmatrix}
+\begin{bmatrix}
+ x \\
+ y \\
  z
-\\end{bmatrix}.
+\end{bmatrix}.
 $$
 
 W `System.Numerics` nie trzeba przepisywać wzoru ręcznie:
@@ -93,7 +93,7 @@ Vector3 wynik = Vector3.Transform(punkt, transformacja);
 Console.WriteLine(wynik);
 ```
 
-Dla tego przykładu najpierw otrzymujemy `(2, 0, 0)`, po obrocie `(0, 2, 0)`, a po przesunięciu `(10, 7, 0)`, z niewielkim błędem zmiennoprzecinkowym przy cosinusie kąta $90^\\circ$. Kolejność jest ważna: macierze transformacji na ogół nie przemieniają się, czyli `A * B` daje inny efekt niż `B * A`.
+Dla tego przykładu najpierw otrzymujemy `(2, 0, 0)`, po obrocie `(0, 2, 0)`, a po przesunięciu `(10, 7, 0)`, z niewielkim błędem zmiennoprzecinkowym przy cosinusie kąta $90^\circ$. Kolejność jest ważna: macierze transformacji na ogół nie przemieniają się, czyli `A * B` daje inny efekt niż `B * A`.
 
 ### Obrót wokół innych osi
 
