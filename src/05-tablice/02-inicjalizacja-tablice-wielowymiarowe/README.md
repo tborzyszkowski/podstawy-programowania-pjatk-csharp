@@ -70,7 +70,7 @@ flowchart LR
     A[macierz r x c] --> B[utworz wynik c x r]
     B --> C[wiersz 0..r-1]
     C --> D[kolumna 0..c-1]
-    D --> E[wynik[kolumna, wiersz] = macierz[wiersz, kolumna]]
+    D --> E["wynik[kolumna, wiersz] = macierz[wiersz, kolumna]"]
 ```
 
 Źródło: [diagram-inicjalizacja-macierze.mmd](diagram-inicjalizacja-macierze.mmd).
