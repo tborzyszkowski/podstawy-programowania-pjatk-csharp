@@ -104,5 +104,4 @@ W zadaniu 3 pętla zewnętrzna wyznacza numer wiersza, a wewnętrzna wypisuje ty
 - [Iteration statements - C# reference](https://learn.microsoft.com/dotnet/csharp/language-reference/statements/iteration-statements),
 - [Jump statements: break and continue](https://learn.microsoft.com/dotnet/csharp/language-reference/statements/jump-statements),
 - [Arithmetic operators](https://learn.microsoft.com/dotnet/csharp/language-reference/operators/arithmetic-operators),
-- [Mermaid flowcharts](https://mermaid.js.org/syntax/flowchart.html),
-- [Numerowany układ katalogów kursu Java](https://github.com/tborzyszkowski/oop-concepts-java/tree/main/02_OOP/src).
+- [Mermaid flowcharts](https://mermaid.js.org/syntax/flowchart.html).

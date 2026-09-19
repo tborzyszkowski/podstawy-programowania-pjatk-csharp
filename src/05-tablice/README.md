@@ -96,4 +96,3 @@ Linki sprawdzone przed dodaniem do materiałów:
 - [Array.BinarySearch method](https://learn.microsoft.com/dotnet/api/system.array.binarysearch) - wyszukiwanie binarne w posortowanej tablicy.
 - [Matrix4x4 structure](https://learn.microsoft.com/dotnet/api/system.numerics.matrix4x4) - macierze transformacji w `System.Numerics`.
 - [Vector3.Transform method](https://learn.microsoft.com/dotnet/api/system.numerics.vector3.transform) - przekształcanie punktu lub wektora.
-- [Układ katalogów kursu Java](https://github.com/tborzyszkowski/oop-concepts-java/tree/main/02_OOP/src) - inspiracja numeracją tematów.

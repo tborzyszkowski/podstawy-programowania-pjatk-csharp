@@ -63,5 +63,4 @@ Debugowanie w Visual Studio Code uruchamia się przez `F5`, a krokowanie przez `
 - [Built-in types](https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/built-in-types),
 - [Numeric conversions](https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/numeric-conversions),
 - [Operators and expressions](https://learn.microsoft.com/dotnet/csharp/language-reference/operators/),
-- [The `const` keyword](https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/const),
-- [Układ katalogów kursu Java](https://github.com/tborzyszkowski/oop-concepts-java/tree/main/02_OOP/src).
+- [The `const` keyword](https://learn.microsoft.com/dotnet/csharp/language-reference/keywords/const).
