@@ -1,0 +1,9 @@
+sequenceDiagram
+    participant K as Kod wywolujacy
+    participant M as Metoda
+    K->>M: Wywolanie
+    M-->>K: return wynik
+    K->>M: Kolejny krok iteratora
+    M-->>K: yield return element
+    K->>M: Kolejny krok
+    M-->>K: yield break / koniec

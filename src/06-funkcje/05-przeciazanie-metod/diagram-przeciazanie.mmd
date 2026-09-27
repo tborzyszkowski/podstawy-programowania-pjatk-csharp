@@ -1,0 +1,8 @@
+flowchart TD
+    A[Wywolanie metody] --> B{Dopasowanie sygnatury}
+    B -- jeden int --> C[Pole int]
+    B -- dwa int --> D[Pole int int]
+    B -- jeden double --> E[Pole double]
+    C --> F[Wynik]
+    D --> F
+    E --> F

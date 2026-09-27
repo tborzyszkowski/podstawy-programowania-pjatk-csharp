@@ -1,0 +1,9 @@
+flowchart TD
+    A[Lista wydatkow] --> B[Suma]
+    A --> C[Filtr kategorii yield return]
+    C --> D[Suma kategorii]
+    B --> E[Udzial w limicie]
+    E --> F[Raport void]
+    G[Tekst wydatku] --> H[Walidacja out]
+    H -->|poprawny| A
+    H -->|bledny| I[Komunikat]

@@ -16,6 +16,7 @@ Materiały do zajęć z Podstaw Programowania na PJATK w Gdańsku.
 - **03. Pętle** - [wielokrotne wykonywanie instrukcji](src/03-petle/README.md): pętle `for`, `while`, `do while`, zagnieżdżanie oraz sterowanie iteracją.
 - **04. Typy i operatory** - [typy danych, konwersje i operatory](src/04-typy_operatory/README.md): dobór reprezentacji danych, konwersje, stałe, operatory i ich priorytety.
 - **05. Tablice** - [tablice i algorytmy](src/05-tablice/README.md): tablice jednowymiarowe i wielowymiarowe, wyszukiwanie, sortowanie, macierze oraz proste transformacje 3D.
+- **06. Funkcje i metody** - [metody, parametry, wartości zwracane i dziel i zwyciężaj](src/06-funkcje/README.md): projektowanie metod w C#, przekazywanie danych, biblioteki oraz kompletne aplikacje konsolowe.
 
 Każdy temat zawiera:
 

@@ -1,0 +1,9 @@
+flowchart TD
+    A[Main: zaplanuj podroz] --> B[ObliczDystans]
+    A --> C[ObliczKosztPaliwa]
+    A --> D[WypiszPodsumowanie]
+    B --> E[Dystans]
+    E --> C
+    C --> F[Koszt]
+    E --> D
+    F --> D

@@ -1,0 +1,5 @@
+flowchart TD
+    A[Wywolanie void] --> B{Czy jest stan do obslugi?}
+    B -- Nie --> C[return bez wartosci]
+    B -- Tak --> D[Efekt uboczny]
+    D --> E[Koniec metody]

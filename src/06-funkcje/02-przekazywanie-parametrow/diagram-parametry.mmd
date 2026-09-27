@@ -1,0 +1,7 @@
+flowchart TD
+    A[Argument] --> B{Modyfikator parametru}
+    B -- brak --> C[Kopia wartosci]
+    B -- ref --> D[Wspolna zmienna]
+    B -- out --> E[Metoda nadaje wartosc]
+    B -- in --> F[Wspolna referencja tylko do odczytu]
+    B -- params --> G[Zbior argumentow]

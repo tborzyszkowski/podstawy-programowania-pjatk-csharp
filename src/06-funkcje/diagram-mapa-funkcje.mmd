@@ -1,0 +1,10 @@
+flowchart LR
+    P[Problem] --> D[Podzial na odpowiedzialnosci]
+    D --> A[Parametry]
+    D --> R[Wynik]
+    D --> V[Void i efekt uboczny]
+    A --> M[Metoda C#]
+    R --> M
+    V --> M
+    M --> T[Testy]
+    T --> U[Aplikacja]
