@@ -1,0 +1,12 @@
+flowchart TD
+    A[Problem] --> B{Struktura zagniezdzona?}
+    B -- Nie --> C[Petla]
+    B -- Tak --> D{Glebokosc kontrolowana?}
+    D -- Tak --> E[Rekurencja]
+    D -- Nie --> F[Jawny stos]
+    E --> G{Powtarzane podproblemy?}
+    G -- Tak --> H[Memoizacja]
+    G -- Nie --> I[Testy i pomiar]
+    C --> I
+    F --> I
+    H --> I

@@ -1,0 +1,8 @@
+flowchart LR
+    P[Problem] --> B[Przypadek bazowy]
+    P --> R[Krok rekurencyjny]
+    R --> S[Mniejszy problem]
+    S --> B
+    B --> W[Wynik czastkowy]
+    W --> Z[Zlozenie wyniku]
+    Z --> D[Program C#]

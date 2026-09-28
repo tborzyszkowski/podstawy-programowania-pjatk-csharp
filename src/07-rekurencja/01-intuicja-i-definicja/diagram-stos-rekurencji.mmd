@@ -1,0 +1,11 @@
+sequenceDiagram
+    participant M3 as Odlicz(3)
+    participant M2 as Odlicz(2)
+    participant M1 as Odlicz(1)
+    participant M0 as Odlicz(0)
+    M3->>M2: wywolanie
+    M2->>M1: wywolanie
+    M1->>M0: baza
+    M0-->>M1: powrot
+    M1-->>M2: powrot
+    M2-->>M3: powrot

@@ -1,0 +1,7 @@
+flowchart TD
+    A[Napis i przedzial] --> B{lewy >= prawy?}
+    B -- Tak --> C[Koniec]
+    B -- Nie --> D{Znaki rowne?}
+    D -- Nie --> E[False]
+    D -- Tak --> F[Zwęz przedzial]
+    F --> A
