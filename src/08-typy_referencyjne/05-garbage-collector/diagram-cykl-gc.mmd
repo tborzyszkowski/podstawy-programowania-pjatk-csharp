@@ -1,0 +1,9 @@
+flowchart TD
+    A[new tworzy obiekt] --> B[Obiekt osiągalny]
+    B --> C{Czy są referencje?}
+    C -- Tak --> D[Obiekt pozostaje żywy]
+    C -- Nie --> E[GC może odzyskać pamięć]
+    D --> F{Zasób zewnętrzny?}
+    F -- Tak --> G[Dispose lub using]
+    F -- Nie --> H[Zwykła pamięć zarządzana]
+    E --> I[Wolna pamięć dla CLR]

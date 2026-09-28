@@ -1,0 +1,8 @@
+flowchart TD
+    A[Dane o zmiennej liczbie elementów] --> B{Czy typ elementu jest znany?}
+    B -- Tak --> C[List<T>]
+    B -- Nie lub stare API --> D[ArrayList object]
+    C --> E[Add, Remove, Find, Sort]
+    D --> F[Boxing i rzutowanie]
+    E --> G[Raport programu]
+    F --> G

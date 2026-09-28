@@ -1,0 +1,10 @@
+flowchart TD
+    A[Operacja programu] --> B{Jaka kolejność?}
+    B -- Ostatni pierwszy --> C[Stack<T>]
+    B -- Pierwszy pierwszy --> D[Queue<T>]
+    B -- Wstawianie za węzłem --> E[LinkedList<T>]
+    B -- Sąsiedztwo --> F[Dictionary<TKey, List<T>>]
+    C --> G[Metoda lub algorytm]
+    D --> G
+    E --> G
+    F --> G

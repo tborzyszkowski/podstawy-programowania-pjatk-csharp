@@ -1,0 +1,11 @@
+flowchart TD
+    A[Przypisanie int] --> B[Kopia wartości]
+    B --> C[Zmiana drugiej zmiennej]
+    C --> D[Dwie niezależne liczby]
+    E[Przypisanie klasy] --> F[Kopia referencji]
+    F --> G[Dwie zmienne wskazują jeden obiekt]
+    G --> H[Mutacja pola widoczna przez obie zmienne]
+    G --> I[Przypisanie nowej referencji tylko lokalne]
+    J[int] --> K[Boxing]
+    K --> L[object na stercie]
+    L --> M[Unboxing do zgodnego int]

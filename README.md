@@ -18,6 +18,7 @@ Materiały do zajęć z Podstaw Programowania na PJATK w Gdańsku.
 - **05. Tablice** - [tablice i algorytmy](src/05-tablice/README.md): tablice jednowymiarowe i wielowymiarowe, wyszukiwanie, sortowanie, macierze oraz proste transformacje 3D.
 - **06. Funkcje i metody** - [metody, parametry, wartości zwracane i dziel i zwyciężaj](src/06-funkcje/README.md): projektowanie metod w C#, przekazywanie danych, biblioteki oraz kompletne aplikacje konsolowe.
 - **07. Rekurencja** - [intuicja, koszty i algorytmy rekurencyjne](src/07-rekurencja/README.md): definicja rekurencji, porównanie z iteracją, klasa `string`, programy i zadania laboratoryjne.
+- **08. Typy referencyjne i kolekcje** - [referencje, kolekcje, pamięć i GC](src/08-typy_referencyjne/README.md): różnica między typami wartościowymi i referencyjnymi, kolekcje .NET, struktury dynamiczne, Garbage Collector oraz laboratorium.
 
 Każdy temat zawiera:
 

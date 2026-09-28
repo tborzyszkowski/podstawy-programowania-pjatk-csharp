@@ -1,0 +1,11 @@
+flowchart TD
+    A[Tablica, List, HashSet lub LINQ] --> B[IEnumerable<T>]
+    B --> C[foreach i LINQ]
+    B --> D[ToList lub ToArray]
+    D --> E[Własność snapshotu]
+    F[ICollection<T>] --> G[Add Remove Clear Contains]
+    H[IReadOnlyCollection<T>] --> I[Count bez mutacji]
+    C --> J[Raport]
+    G --> J
+    I --> J
+    E --> J

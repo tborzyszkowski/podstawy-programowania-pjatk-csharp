@@ -1,0 +1,9 @@
+flowchart LR
+    A[Wartość lub referencja] --> B[Obiekt i stan]
+    B --> C[Kolekcja generyczna]
+    C --> D[Struktura dynamiczna]
+    B --> E[Alokacja zarządzana]
+    E --> F[Garbage Collector]
+    C --> G[Program C#]
+    D --> G
+    F --> G
