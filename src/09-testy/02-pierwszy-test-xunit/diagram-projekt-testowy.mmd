@@ -1,0 +1,6 @@
+flowchart LR
+    A[MyApp.csproj] -->|ProjectReference| B[MyApp.Tests.csproj]
+    B --> C[xUnit runner]
+    B --> D[Microsoft.NET.Test.Sdk]
+    C --> E[dotnet test]
+    D --> E

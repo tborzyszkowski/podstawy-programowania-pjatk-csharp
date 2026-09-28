@@ -19,12 +19,13 @@ Materiały do zajęć z Podstaw Programowania na PJATK w Gdańsku.
 - **06. Funkcje i metody** - [metody, parametry, wartości zwracane i dziel i zwyciężaj](src/06-funkcje/README.md): projektowanie metod w C#, przekazywanie danych, biblioteki oraz kompletne aplikacje konsolowe.
 - **07. Rekurencja** - [intuicja, koszty i algorytmy rekurencyjne](src/07-rekurencja/README.md): definicja rekurencji, porównanie z iteracją, klasa `string`, programy i zadania laboratoryjne.
 - **08. Typy referencyjne i kolekcje** - [referencje, kolekcje, pamięć i GC](src/08-typy_referencyjne/README.md): różnica między typami wartościowymi i referencyjnymi, kolekcje .NET, struktury dynamiczne, Garbage Collector oraz laboratorium.
+- **09. Testy jednostkowe i TDD** - [xUnit, asercje, dobre praktyki i TDD](src/09-testy/README.md): motywacja do testowania, rozdzielenie projektu aplikacji i testów, testy parametryzowane, FIRST oraz laboratorium z rozwiązaniami.
 
 Każdy temat zawiera:
 
 - osobny plik `README.md` przeznaczony do wykorzystania na wykładzie i laboratorium,
 - diagramy Mermaid (`.mmd`), które można wyświetlić w Visual Studio Code z rozszerzeniem Mermaid,
-- kompletny projekt konsolowy `net9.0`,
+- kompletny projekt konsolowy `net9.0` albo projekt biblioteki z testami `net9.0`,
 - zadania dla studentów, rozwiązania i instrukcje uruchamiania.
 
 Numerowany układ katalogów jest inspirowany strukturą [kursu programowania obiektowego w Javie](https://github.com/tborzyszkowski/oop-concepts-java/tree/main/02_OOP/src), ale wszystkie przykłady w tym repozytorium odnoszą się do C# i .NET.

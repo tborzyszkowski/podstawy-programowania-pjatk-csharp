@@ -1,0 +1,10 @@
+flowchart LR
+    A[Wymaganie] --> B[Mala odpowiedzialnosc]
+    B --> C[Test jednostkowy]
+    C --> D{Wynik}
+    D -- Nie --> E[Expected vs Actual]
+    E --> F[Debugowanie i poprawka]
+    F --> C
+    D -- Tak --> G[Refaktoryzacja]
+    G --> C
+    C --> H[Zaufanie do zmiany]

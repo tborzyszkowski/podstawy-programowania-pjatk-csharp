@@ -1,0 +1,9 @@
+flowchart TD
+    A[Kontrakt metody] --> B[Przypadki danych]
+    B --> C[Test xUnit w AAA]
+    C --> D[dotnet test]
+    D --> E{Zielony?}
+    E -- Nie --> F[Expected vs Actual]
+    F --> G[Debugowanie i poprawka]
+    G --> D
+    E -- Tak --> H[Refaktoryzacja i dodatkowy przypadek]

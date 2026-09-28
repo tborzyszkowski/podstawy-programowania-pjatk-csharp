@@ -1,0 +1,6 @@
+flowchart TD
+    A[Testowana metoda] --> B[Wynik lub wyjatek]
+    B --> C{Asercja}
+    C -- zgodne --> D[Test zaliczony]
+    C -- niezgodne --> E[Expected vs Actual]
+    E --> F[Sprawdz dane, kontrakt i implementacje]

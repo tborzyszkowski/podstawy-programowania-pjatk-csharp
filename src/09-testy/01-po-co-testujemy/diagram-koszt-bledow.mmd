@@ -1,0 +1,9 @@
+flowchart TD
+    A[Zmiana w kodzie] --> B{Czy istnieje automatyczny test?}
+    B -- Tak --> C[Szybka informacja zwrotna]
+    C --> D{Blad wykryty lokalnie?}
+    D -- Tak --> E[Tania poprawka]
+    D -- Nie --> F[Test przechodzi]
+    B -- Nie --> G[Przeklikanie lub zgloszenie uzytkownika]
+    G --> H[Pozne odtworzenie bledu]
+    H --> I[Drozsza diagnoza i naprawa]
