@@ -77,20 +77,17 @@ Wartość `float.Epsilon` lub `double.Epsilon` opisuje zatem odległość od zer
 
 ### Cecha i mantysa
 
-Dla normalnych liczb binarnych zapis można uprościć do postaci:
+Liczby `float` i `double` są zapisane trochę jak liczby w notacji naukowej. Na przykład `3500` można zapisać jako `3,5 × 10^3`: `3,5` opisuje cyfry liczby, a `3` mówi, ile razy przesunąć przecinek. Komputer używa podobnego pomysłu, ale w systemie dwójkowym:
 
 ```text
-(-1)^znak × (1 + ułamek_mantysy) × 2^(cecha - bias)
+znak × mantysa × 2^wykładnik
 ```
 
-`Znak` określa stronę osi, `cecha` (wykładnik) mówi o rzędzie wielkości, a mantysa — dokładniej: znacząca część liczby — przechowuje cyfry wartości. W liczbach normalnych pierwsza jedynka mantysy nie jest zapisywana, tylko zakładana, dlatego `float` ma 24, a `double` 53 bity precyzji, mimo że zapisane pola ułamkowe mają odpowiednio 23 i 52 bity.
+Mantysa przechowuje cyfry liczby, więc decyduje o jej precyzji. Cecha (wykładnik) określa skalę, czyli przesunięcie przecinka binarnego: większa cecha pozwala zapisać większe liczby, ale odstęp między sąsiednimi wartościami też staje się większy. Znak mówi, czy liczba jest dodatnia, czy ujemna.
 
-| Typ | Znak | Pole cechy | Bias cechy | Zapisana część mantysy | Precyzja z ukrytą jedynką |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| `float` | 1 bit | 8 bitów | 127 | 23 bity | 24 bity |
-| `double` | 1 bit | 11 bitów | 1023 | 52 bity | 53 bity |
+W zwykłych (`normalnych`) liczbach pierwsza cyfra binarna mantysy jest zawsze `1`, więc komputer nie musi jej zapisywać — można ją sobie dopowiedzieć. Dlatego `float` ma 24 bity precyzji, a `double` 53. `double` może więc rozróżniać więcej cyfr, a oba typy nadal mogą zapisywać zarówno bardzo małe, jak i bardzo duże wartości dzięki wykładnikowi.
 
-Pole cechy złożone z samych zer służy do zapisu zera i liczb podnormalnych, a złożone z samych jedynek — do zapisu nieskończoności i `NaN`. Dlatego `float` i `double` mają wartości `PositiveInfinity`, `NegativeInfinity` oraz `NaN`, które nie są zwykłymi punktami skończonej osi liczbowej.
+Przy samym zerze specjalny zapis pozwala przechować jeszcze mniejsze liczby, ale z mniejszą precyzją. Specjalne wartości cechy oznaczają też nieskończoności i `NaN` (wynik niebędący liczbą), a nie zwykłe liczby skończone.
 
 ### Krańce dziedziny
 
