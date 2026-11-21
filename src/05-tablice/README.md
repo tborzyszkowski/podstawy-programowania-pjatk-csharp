@@ -68,7 +68,7 @@ Dla każdej metody przygotuj co najmniej:
 
 Nie należy zakładać, że `Array.Sort` sortuje macierz `[,]`: dokumentacja .NET opisuje `Array.Sort` dla tablic jednowymiarowych. Macierz trzeba przetwarzać własnymi pętlami albo najpierw spłaszczyć świadomie do `T[]`.
 
-## Zadania przekrojowe
+## Zadania przekrojowe do samodzielnego rozwiązania
 
 1. Zbuduj analizator pomiarów temperatury: wczytaj `n`, utwórz `double[]`, oblicz minimum, maksimum, średnią i liczbę odczytów poza zakresem. Obsłuż `n <= 0`.
 2. Dla tablicy identyfikatorów urządzeń zaimplementuj wyszukiwanie liniowe oraz binarne. Zmierz liczbę porównań i opisz, dlaczego tablica binarna musi być posortowana.
@@ -85,6 +85,171 @@ Nie należy zakładać, że `Array.Sort` sortuje macierz `[,]`: dokumentacja .NE
 - Sortowanie zachowuje wszystkie elementy, także duplikaty.
 - Przy macierzach student rozróżnia liczbę wierszy od liczby kolumn.
 - Do każdego rozwiązania dołączone są dane wejściowe, oczekiwany wynik oraz krótka analiza kosztu.
+
+### Rozwiązania zadań przekrojowych
+
+1. **Analizator temperatury.** Poniżej zakres alarmowy wynosi od `-50` do `50`. Inicjalizacja minimum i maksimum pierwszym pomiarem działa także wtedy, gdy wszystkie wartości są ujemne:
+
+   ```csharp
+   const double MinimumZakresu = -50;
+   const double MaksimumZakresu = 50;
+
+   if (!int.TryParse(Console.ReadLine(), out int n) || n <= 0)
+   {
+       Console.WriteLine("Liczba pomiarów musi być dodatnia.");
+       return;
+   }
+
+   double[] pomiary = new double[n];
+   for (int indeks = 0; indeks < pomiary.Length; indeks++)
+   {
+       if (!double.TryParse(Console.ReadLine(), out pomiary[indeks]) ||
+           !double.IsFinite(pomiary[indeks]))
+       {
+           Console.WriteLine("Podaj skończoną wartość temperatury.");
+           return;
+       }
+   }
+
+   double minimum = pomiary[0];
+   double maksimum = pomiary[0];
+   double suma = 0;
+   int pozaZakresem = 0;
+   foreach (double pomiar in pomiary)
+   {
+       if (pomiar < minimum) minimum = pomiar;
+       if (pomiar > maksimum) maksimum = pomiar;
+       suma += pomiar;
+       if (pomiar < MinimumZakresu || pomiar > MaksimumZakresu) pozaZakresem++;
+   }
+
+   Console.WriteLine($"Min: {minimum}, max: {maksimum}, średnia: {suma / pomiary.Length}");
+   Console.WriteLine($"Poza zakresem: {pozaZakresem}");
+   ```
+
+   Analiza ma koszt $O(n)$ czasu i $O(n)$ pamięci na przechowanie pomiarów.
+
+2. **Wyszukiwanie identyfikatorów.** Posortuj kopię identyfikatorów przed wyszukiwaniem binarnym. Metody `Liniowo` i `Binarnie` wraz z licznikami porównań są rozwiązane w [temacie wyszukiwania](03-wyszukiwanie/README.md#rozwiązania):
+
+   ```csharp
+   int[] identyfikatory = { 42, 17, 81, 17, 55 };
+   int[] posortowane = (int[])identyfikatory.Clone();
+   Array.Sort(posortowane);
+
+   _ = Liniowo(identyfikatory, 17, out int porownaniaLiniowe);
+   _ = Binarnie(posortowane, 17, out int porownaniaBinarne);
+   Console.WriteLine($"Liniowo: {porownaniaLiniowe}; binarnie: {porownaniaBinarne}");
+   ```
+
+   Wyszukiwanie liniowe nie wymaga porządku i ma koszt $O(n)$; binarne wymaga posortowanej tablicy i ma koszt $O(log n)$. Jeśli dane sortujemy tylko raz i wykonujemy wiele wyszukiwań, koszt sortowania może się opłacić.
+
+3. **Porównanie sortowań.** Algorytmy bąbelkowe, przez wybieranie i przez wstawianie opisano w [temacie sortowania](04-sortowanie/README.md#rozwiązania). Każdy dostaje odrębną kopię wejścia:
+
+   ```csharp
+   int[] dane = { 8, 3, 5, 3, 1 };
+   int[][] wyniki = new int[4][];
+
+   wyniki[0] = (int[])dane.Clone();
+   SortowanieBabelkowe(wyniki[0]);
+   wyniki[1] = (int[])dane.Clone();
+   SortowaniePrzezWybieranie(wyniki[1]);
+   wyniki[2] = (int[])dane.Clone();
+   SortowaniePrzezWstawianie(wyniki[2]);
+   wyniki[3] = (int[])dane.Clone();
+   Array.Sort(wyniki[3]);
+
+   foreach (int[] wynik in wyniki)
+   {
+       Console.WriteLine(string.Join(", ", wynik));
+   }
+   ```
+
+   Każda linia powinna zawierać `1, 3, 3, 5, 8`. Wszystkie algorytmy muszą zachować duplikaty; ich koszty i eksperyment pomiarowy opisano w temacie sortowania.
+
+4. **Macierz pomiarów.** Ten przykład oblicza sumy wierszy i kolumn, minimum globalne oraz transpozycję dla dowolnej niepustej macierzy:
+
+   ```csharp
+   int[,] dane = { { 4, 1, 7 }, { 2, 9, 3 } };
+   int wiersze = dane.GetLength(0);
+   int kolumny = dane.GetLength(1);
+   int[] sumyWierszy = new int[wiersze];
+   int[] sumyKolumn = new int[kolumny];
+   int minimum = dane[0, 0];
+
+   for (int wiersz = 0; wiersz < wiersze; wiersz++)
+   {
+       for (int kolumna = 0; kolumna < kolumny; kolumna++)
+       {
+           int wartosc = dane[wiersz, kolumna];
+           sumyWierszy[wiersz] += wartosc;
+           sumyKolumn[kolumna] += wartosc;
+           if (wartosc < minimum) minimum = wartosc;
+       }
+   }
+
+   int[,] transpozycja = new int[kolumny, wiersze];
+   for (int wiersz = 0; wiersz < wiersze; wiersz++)
+   {
+       for (int kolumna = 0; kolumna < kolumny; kolumna++)
+       {
+           transpozycja[kolumna, wiersz] = dane[wiersz, kolumna];
+       }
+   }
+   ```
+
+   Dla przykładu sumy wierszy to `[12, 14]`, sumy kolumn `[6, 10, 10]`, minimum `1`, a transpozycja ma rozmiar `3 x 2`. Czas działania to $O(r \cdot c)$.
+
+5. **Filtr średniej.** Dla każdego piksela sumuj tylko sąsiadów mieszczących się w obrazie i zapisz wynik do nowej macierzy. Dzielenie przez liczbę faktycznie zebranych pikseli realizuje konwencję pomijania brakujących sąsiadów:
+
+   ```csharp
+   static int[,] FiltrSredniej(int[,] obraz)
+   {
+       int wiersze = obraz.GetLength(0);
+       int kolumny = obraz.GetLength(1);
+       int[,] wynik = new int[wiersze, kolumny];
+
+       for (int y = 0; y < wiersze; y++)
+       {
+           for (int x = 0; x < kolumny; x++)
+           {
+               long suma = 0;
+               int licznik = 0;
+               for (int dy = -1; dy <= 1; dy++)
+               {
+                   for (int dx = -1; dx <= 1; dx++)
+                   {
+                       int ny = y + dy;
+                       int nx = x + dx;
+                       if (ny >= 0 && ny < wiersze && nx >= 0 && nx < kolumny)
+                       {
+                           suma += obraz[ny, nx];
+                           licznik++;
+                       }
+                   }
+               }
+
+               wynik[y, x] = (int)Math.Round((double)suma / licznik);
+           }
+       }
+       return wynik;
+   }
+   ```
+
+   Wynik zapisuje się do nowej tablicy, więc piksel po filtracji nie wpływa na obliczenia sąsiadów. Pełny filtr medianowy i przykład zakłóconego piksela znajdują się w [rozwiązaniu algorytmów macierzowych](05-algorytmy-macierzowe/README.md#rozwiązania).
+
+6. **Transformacja 3D.** Dla punktu `(1, 0, 0)` najpierw skalowanie `(2, 1, 1)` daje `(2, 0, 0)`, obrót o 90° wokół Z daje `(0, 2, 0)`, a przesunięcie `(10, 5, 0)` kończy się punktem `(10, 7, 0)`:
+
+   ```csharp
+   Vector3 punkt = new(1, 0, 0);
+   Matrix4x4 transformacja =
+       Matrix4x4.CreateScale(2, 1, 1) *
+       Matrix4x4.CreateRotationZ(MathF.PI / 2) *
+       Matrix4x4.CreateTranslation(10, 5, 0);
+   Vector3 wynik = Vector3.Transform(punkt, transformacja);
+   Console.WriteLine(wynik); // w przybliżeniu <10, 7, 0>
+   ```
+
+   Ręczne obliczenie potwierdza kolejność: skalowanie, obrót, a następnie przesunięcie. Ze względu na obliczenia zmiennoprzecinkowe współrzędne porównuj z tolerancją.
 
 ## Źródła
 

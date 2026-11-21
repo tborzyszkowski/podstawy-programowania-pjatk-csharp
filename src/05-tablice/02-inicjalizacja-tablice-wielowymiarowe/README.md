@@ -79,18 +79,103 @@ flowchart LR
 
 Projekt [Kod/Macierze/Program.cs](Kod/Macierze/Program.cs) pokazuje tablicę z wartościami domyślnymi, macierz `[,]`, tablicę postrzępioną, sumy wierszy i transpozycję. W debuggerze obserwuj różnicę między `Length`, `GetLength(0)` i `GetLength(1)`.
 
-## Zadania
+## Zadania do samodzielnego rozwiązania
 
 1. Utwórz macierz `4 x 4` i wypełnij ją liczbami od `1` do `16` wierszami.
 2. Oblicz sumę głównej przekątnej macierzy kwadratowej.
 3. Zbuduj tablicę postrzępioną przechowującą oceny studentów, gdy każdy student ma inną liczbę ocen. Oblicz średnią każdego wiersza.
 4. Napisz metodę, która sprawdza, czy macierz jest symetryczna względem głównej przekątnej.
 
-### Rozwiązania i wyjaśnienia
+### Rozwiązania
 
-Wypełnianie macierzy numerem elementu może użyć wzoru `wiersz * liczbaKolumn + kolumna + 1`. Przekątna główna ma indeksy `[i, i]`, ale pętla musi działać tylko do `Math.Min(wiersze, kolumny)` dla macierzy niekwadratowej. Dla tablicy postrzępionej nie wolno dzielić przez stałą liczbę ocen: użyj `student.Length`.
+1. Wypełniaj macierz wierszami; wzór daje kolejne liczby od `1` do `16`:
 
-Macierz jest symetryczna, gdy dla każdej pary poprawnych indeksów zachodzi `macierz[i, j] == macierz[j, i]`. Warunek ma sens tylko dla macierzy kwadratowej; w przeciwnym razie metoda powinna zwrócić `false` albo zgłosić błąd kontraktu.
+   ```csharp
+   int[,] macierz = new int[4, 4];
+   for (int wiersz = 0; wiersz < macierz.GetLength(0); wiersz++)
+   {
+       for (int kolumna = 0; kolumna < macierz.GetLength(1); kolumna++)
+       {
+           macierz[wiersz, kolumna] =
+               wiersz * macierz.GetLength(1) + kolumna + 1;
+       }
+   }
+   ```
+
+2. Przekątna główna zawiera elementy `[i, i]`. Suma używa `long`, aby ograniczyć ryzyko przepełnienia:
+
+   ```csharp
+   static long SumaPrzekatnej(int[,] macierz)
+   {
+       if (macierz.GetLength(0) != macierz.GetLength(1))
+       {
+           throw new ArgumentException("Macierz musi być kwadratowa.", nameof(macierz));
+       }
+
+       long suma = 0;
+       for (int indeks = 0; indeks < macierz.GetLength(0); indeks++)
+       {
+           suma += macierz[indeks, indeks];
+       }
+       return suma;
+   }
+   ```
+
+3. Każdy student ma własną tablicę ocen, dlatego wiersze mogą mieć różne długości:
+
+   ```csharp
+   int[][] oceny =
+   {
+       new[] { 5, 4, 5 },
+       new[] { 3, 4 },
+       Array.Empty<int>()
+   };
+
+   for (int student = 0; student < oceny.Length; student++)
+   {
+       if (oceny[student].Length == 0)
+       {
+           Console.WriteLine($"Student {student}: brak ocen");
+           continue;
+       }
+
+       double srednia = 0;
+       foreach (int ocena in oceny[student])
+       {
+           srednia += ocena;
+       }
+       srednia /= oceny[student].Length;
+       Console.WriteLine($"Student {student}: {srednia:F2}");
+   }
+   ```
+
+4. Macierz prostokątna nie może być symetryczna. Dla macierzy kwadratowej wystarczy sprawdzać elementy nad przekątną:
+
+   ```csharp
+   static bool CzySymetryczna(int[,] macierz)
+   {
+       int wiersze = macierz.GetLength(0);
+       int kolumny = macierz.GetLength(1);
+       if (wiersze != kolumny)
+       {
+           return false;
+       }
+
+       for (int wiersz = 0; wiersz < wiersze; wiersz++)
+       {
+           for (int kolumna = wiersz + 1; kolumna < kolumny; kolumna++)
+           {
+               if (macierz[wiersz, kolumna] != macierz[kolumna, wiersz])
+               {
+                   return false;
+               }
+           }
+       }
+       return true;
+   }
+   ```
+
+Symetryczność wymaga równości `macierz[i, j]` i `macierz[j, i]` dla każdej pary indeksów. Sprawdzenie tylko połowy macierzy wystarcza, bo relacja jest symetryczna.
 
 ## Laboratorium
 

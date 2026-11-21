@@ -81,29 +81,98 @@ flowchart TD
 
 Projekt [Kod/Statystyki/Program.cs](Kod/Statystyki/Program.cs) tworzy tablicę pomiarów, wypisuje indeksy, oblicza sumę, minimum, maksimum i średnią oraz odwraca kopię tablicy. Zatrzymaj debugger na aktualizacji `minimum`, aby zobaczyć niezmiennik: po przetworzeniu elementów od `0` do `i` zmienna `minimum` jest najmniejszym z tych elementów.
 
-## Zadania
+## Zadania do samodzielnego rozwiązania
 
 1. Napisz metodę zwracającą liczbę elementów parzystych w `int[]`.
 2. Napisz metodę odwracającą tablicę w miejscu, bez tworzenia drugiej tablicy.
 3. Znajdź indeks pierwszego maksimum. Dla pustej tablicy zwróć `-1`.
 4. Oblicz średnią tylko z wartości dodatnich i zwróć informację, gdy nie ma żadnej takiej wartości.
 
-### Rozwiązania i wyjaśnienia
+### Rozwiązania
 
-Dla zadania 1 wystarczy akumulator:
+1. Zliczaj elementy spełniające warunek. Dla pustej tablicy wynik wynosi `0`:
 
 ```csharp
-int parzyste = 0;
-foreach (int liczba in liczby)
+static int PoliczParzyste(int[] liczby)
 {
-    if (liczba % 2 == 0)
+    int parzyste = 0;
+    foreach (int liczba in liczby)
     {
-        parzyste++;
+        if (liczba % 2 == 0)
+        {
+            parzyste++;
+        }
     }
+    return parzyste;
 }
 ```
 
-Odwracanie w miejscu wymaga zamiany par elementów: `0` z `Length - 1`, potem `1` z `Length - 2`, aż do środka. Złożoność czasowa wynosi $O(n)$, a dodatkowa pamięć $O(1)$. Indeks pierwszego maksimum aktualizuj tylko przy `>`, a nie przy `>=`, aby duplikat nie przesunął wyniku.
+2. Zamieniaj elementy na przeciwległych końcach, przesuwając indeksy ku środkowi:
+
+   ```csharp
+   static void OdwrocWTablicy(int[] liczby)
+   {
+       int lewy = 0;
+       int prawy = liczby.Length - 1;
+       while (lewy < prawy)
+       {
+           (liczby[lewy], liczby[prawy]) = (liczby[prawy], liczby[lewy]);
+           lewy++;
+           prawy--;
+       }
+   }
+   ```
+
+3. Zacznij od indeksu `0`, a aktualizuj wynik tylko przy znalezieniu wartości ściśle większej. Dzięki temu przy remisie zostaje pierwszy indeks:
+
+   ```csharp
+   static int IndeksPierwszegoMaksimum(int[] liczby)
+   {
+       if (liczby.Length == 0)
+       {
+           return -1;
+       }
+
+       int indeksMaksimum = 0;
+       for (int indeks = 1; indeks < liczby.Length; indeks++)
+       {
+           if (liczby[indeks] > liczby[indeksMaksimum])
+           {
+               indeksMaksimum = indeks;
+           }
+       }
+       return indeksMaksimum;
+   }
+   ```
+
+4. Zwróć `false`, gdy nie ma dodatnich wartości; w przeciwnym razie oblicz średnią tylko z nich:
+
+   ```csharp
+   static bool SredniaDodatnich(int[] liczby, out double srednia)
+   {
+       double suma = 0;
+       int licznik = 0;
+       foreach (int liczba in liczby)
+       {
+           if (liczba > 0)
+           {
+               suma += liczba;
+               licznik++;
+           }
+       }
+
+       if (licznik == 0)
+       {
+           srednia = 0;
+           return false;
+       }
+
+       srednia = suma / licznik;
+       return true;
+   }
+   ```
+
+Odwracanie działa w miejscu: czas $O(n)$, pamięć dodatkowa $O(1)$. Pozostałe metody wykonują po jednym przejściu, więc mają czas $O(n)$ i pamięć dodatkową $O(1)$.
 
 ## Laboratorium
 

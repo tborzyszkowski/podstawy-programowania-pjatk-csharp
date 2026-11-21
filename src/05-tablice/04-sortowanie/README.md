@@ -158,11 +158,17 @@ flowchart TD
 
 Źródło: [diagram-sortowanie.mmd](diagram-sortowanie.mmd).
 
+## Wizualizacje sortowań
+
+- [VisuAlgo: Sorting](https://visualgo.net/en/sorting) — interaktywne animacje krok po kroku dla popularnych algorytmów sortowania.
+- [Toptal: Sorting Algorithms](https://www.toptal.com/developers/sorting-algorithms) — porównanie animacji sortowań na tych samych danych.
+- [Algorythmics na YouTube](https://www.youtube.com/algorythmics) — materiały wideo dotyczące algorytmów i ich działania.
+
 ## Projekt demonstracyjny
 
 Projekt [Kod/Porownanie/Program.cs](Kod/Porownanie/Program.cs) uruchamia sortowanie bąbelkowe, przez wybieranie, przez wstawianie, przez scalanie, szybkie, kopcowanie oraz `Array.Sort` na kopiach tych samych danych. Raportuje wynik, liczbę porównań i operacji przenoszenia. Ustaw punkt przerwania w sortowaniu przez wstawianie i prześledź niezmiennik posortowanego prefiksu; w merge sort obserwuj scalanie dwóch posortowanych połówek, a w heap sort własność kopca.
 
-## Zadania
+## Zadania do samodzielnego rozwiązania
 
 1. Dodaj wersję sortowania bąbelkowego malejąco.
 2. Zaimplementuj merge sort dla `int[]` i policz porównania podczas scalania.
@@ -171,11 +177,154 @@ Projekt [Kod/Porownanie/Program.cs](Kod/Porownanie/Program.cs) uruchamia sortowa
 5. Przygotuj eksperyment dla tablic losowych, posortowanych i odwrotnie posortowanych. Porównaj trzy algorytmy własne i `Array.Sort`.
 6. Wyjaśnij, dlaczego `Array.Sort` nie można bezpośrednio zastosować do `int[,]`.
 
-### Rozwiązania i wyjaśnienia
+### Rozwiązania
 
-W zadaniu 1 wystarczy odwrócić relację `>` na `<`. W zadaniu 2 podczas scalania porównuj elementy na początku obu połówek i zapisuj mniejszy do bufora. W zadaniu 3 po podziale sortuj przedziały `[lewy, granica - 1]` oraz `[granica + 1, prawy]`.
+1. W sortowaniu malejącym zamień elementy, gdy lewy jest mniejszy od prawego:
 
-Dla powiązanych tablic użyj `Array.Sort(klucze, wartosci, comparer)` z komparatorem odwracającym kolejność. Nie sortuj `wartosci` osobno, bo utracisz relację między rekordem a wynikiem. W eksperymencie zapisz rozmiar wejścia i czas lub liczbę operacji; pojedynczy pomiar dla małej tablicy nie wystarcza do wniosków o złożoności.
+   ```csharp
+   static void SortowanieBabelkoweMalejaco(int[] liczby)
+   {
+       for (int koniec = liczby.Length - 1; koniec > 0; koniec--)
+       {
+           bool zamiana = false;
+           for (int indeks = 0; indeks < koniec; indeks++)
+           {
+               if (liczby[indeks] < liczby[indeks + 1])
+               {
+                   (liczby[indeks], liczby[indeks + 1]) =
+                       (liczby[indeks + 1], liczby[indeks]);
+                   zamiana = true;
+               }
+           }
+           if (!zamiana)
+           {
+               return;
+           }
+       }
+   }
+   ```
+
+2. Merge sort scala dwa uporządkowane przedziały do bufora. Poniższa metoda zwraca liczbę porównań wykonanych podczas scalania:
+
+   ```csharp
+   static long SortowaniePrzezScalanie(int[] liczby)
+   {
+       int[] bufor = new int[liczby.Length];
+       return Sortuj(0, liczby.Length - 1);
+
+       long Sortuj(int lewy, int prawy)
+       {
+           if (lewy >= prawy)
+           {
+               return 0;
+           }
+
+           int srodek = lewy + (prawy - lewy) / 2;
+           long porownania = Sortuj(lewy, srodek) + Sortuj(srodek + 1, prawy);
+           int i = lewy;
+           int j = srodek + 1;
+           int k = lewy;
+
+           while (i <= srodek && j <= prawy)
+           {
+               porownania++;
+               bufor[k++] = liczby[i] <= liczby[j] ? liczby[i++] : liczby[j++];
+           }
+           while (i <= srodek) bufor[k++] = liczby[i++];
+           while (j <= prawy) bufor[k++] = liczby[j++];
+           for (int indeks = lewy; indeks <= prawy; indeks++)
+           {
+               liczby[indeks] = bufor[indeks];
+           }
+           return porownania;
+       }
+   }
+   ```
+
+3. Pivot ze środka przedziału oraz przesuwanie obu indeksów obsługują także duplikaty:
+
+   ```csharp
+   static void QuickSort(int[] liczby, int lewy, int prawy)
+   {
+       int i = lewy;
+       int j = prawy;
+       int pivot = liczby[lewy + (prawy - lewy) / 2];
+
+       while (i <= j)
+       {
+           while (liczby[i] < pivot) i++;
+           while (liczby[j] > pivot) j--;
+           if (i <= j)
+           {
+               (liczby[i], liczby[j]) = (liczby[j], liczby[i]);
+               i++;
+               j--;
+           }
+       }
+
+       if (lewy < j) QuickSort(liczby, lewy, j);
+       if (i < prawy) QuickSort(liczby, i, prawy);
+   }
+   ```
+
+   Wywołaj metodę dla niepustej tablicy jako `QuickSort(liczby, 0, liczby.Length - 1)`.
+
+4. Sortuj według wyników i przekaż identyfikatory jako równoległą tablicę. `Array.Sort` przenosi elementy obu tablic razem:
+
+   ```csharp
+   int[] wyniki = { 82, 95, 74 };
+   string[] identyfikatory = { "S-02", "S-01", "S-03" };
+
+   Array.Sort(
+       wyniki,
+       identyfikatory,
+       Comparer<int>.Create((a, b) => b.CompareTo(a)));
+   ```
+
+   Po sortowaniu para wyniku i identyfikatora nadal opisuje tę samą osobę.
+
+5. Użyj tych samych trzech metod własnych pokazanych wcześniej (bąbelkowej, przez wybieranie i przez wstawianie) oraz `Array.Sort`. Każdy algorytm dostaje osobną kopię identycznego wejścia:
+
+   ```csharp
+   using System.Diagnostics;
+
+   const int rozmiar = 2_000;
+   Random losowyGenerator = new(123);
+   int[] losowe = Enumerable.Range(0, rozmiar)
+       .Select(_ => losowyGenerator.Next(0, 10_000)).ToArray();
+   (string Nazwa, int[] Dane)[] wejscia =
+   {
+       ("losowe", losowe),
+       ("rosnące", Enumerable.Range(0, rozmiar).ToArray()),
+       ("malejące", Enumerable.Range(0, rozmiar).Reverse().ToArray())
+   };
+   (string Nazwa, Action<int[]> Sortuj)[] algorytmy =
+   {
+       ("bąbelkowe", SortowanieBabelkowe),
+       ("wybieranie", SortowaniePrzezWybieranie),
+       ("wstawianie", SortowaniePrzezWstawianie),
+       ("Array.Sort", tablica => Array.Sort(tablica))
+   };
+
+   foreach ((string nazwaDanych, int[] dane) in wejscia)
+   {
+       int[] oczekiwane = (int[])dane.Clone();
+       Array.Sort(oczekiwane);
+       foreach ((string nazwaAlgorytmu, Action<int[]> sortuj) in algorytmy)
+       {
+           int[] kopia = (int[])dane.Clone();
+           Stopwatch stoper = Stopwatch.StartNew();
+           sortuj(kopia);
+           stoper.Stop();
+           Console.WriteLine(
+               $"{nazwaDanych}, {nazwaAlgorytmu}: {stoper.ElapsedMilliseconds} ms, poprawny wynik: {kopia.SequenceEqual(oczekiwane)}");
+       }
+   }
+   ```
+
+   Dla wiarygodniejszego pomiaru zwiększ rozmiar, uruchom każdą kombinację kilka razy i porównuj medianę czasów. Algorytmy kwadratowe mogą być powolne dla dużych danych.
+
+6. `Array.Sort` przyjmuje tablice jednowymiarowe; `int[,]` ma dwa indeksy i nie jest `int[]`. Trzeba określić, czy porządek ma obowiązywać w każdym wierszu, każdej kolumnie czy dla wszystkich elementów po spłaszczeniu. Dopiero po wybraniu reguły można zaimplementować odpowiednie sortowanie.
 
 ## Laboratorium
 

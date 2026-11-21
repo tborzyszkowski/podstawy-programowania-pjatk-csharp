@@ -90,18 +90,143 @@ Biblioteka jest właściwa w kodzie produkcyjnym, ale implementacja własnej met
 
 Projekt [Kod/Wyszukiwanie/Program.cs](Kod/Wyszukiwanie/Program.cs) porównuje wyszukiwanie liniowe, własne wyszukiwanie binarne i `Array.BinarySearch`. Wypisuje liczbę porównań, dzięki czemu różnica jest widoczna na danych o różnym rozmiarze.
 
-## Zadania
+## Zadania do samodzielnego rozwiązania
 
 1. Zmień wyszukiwanie liniowe tak, aby zwracało liczbę wystąpień wartości.
 2. Napisz metodę zwracającą pierwszy indeks wartości w posortowanej tablicy, gdy duplikatów jest wiele.
 3. Napisz wyszukiwanie binarne dla tablicy uporządkowanej malejąco.
 4. Porównaj liczbę porównań dla tablicy 10, 1000 i 1 000 000 elementów.
 
-### Rozwiązania i wyjaśnienia
+### Rozwiązania
 
-Liniowe zliczanie nie może zakończyć się przy pierwszym trafieniu. Wariant „pierwszy indeks” po znalezieniu wartości zapisuje wynik i przesuwa `prawy` na `srodek - 1`, aby sprawdzić, czy wcześniejsza kopia istnieje. Dla porządku malejącego należy odwrócić decyzję: jeśli środek jest mniejszy od szukanej, szukamy po lewej stronie.
+1. Zlicz wszystkie dopasowania; nie kończ pętli przy pierwszym trafieniu:
 
-Dla $n = 1\,000\,000$ wyszukiwanie liniowe może wykonać milion porównań, a binarne około $\log_2(n)$, czyli około 20. To porównanie ma sens dopiero wtedy, gdy koszt posortowania danych i utrzymywania ich w porządku jest uzasadniony.
+   ```csharp
+   static int PoliczWystapienia(int[] liczby, int szukana)
+   {
+       int licznik = 0;
+       foreach (int liczba in liczby)
+       {
+           if (liczba == szukana)
+           {
+               licznik++;
+           }
+       }
+       return licznik;
+   }
+   ```
+
+2. Po znalezieniu wartości zapamiętaj indeks i kontynuuj po lewej stronie, aby odnaleźć wcześniejszy duplikat:
+
+   ```csharp
+   static int PierwszyIndeks(int[] liczby, int szukana)
+   {
+       int lewy = 0;
+       int prawy = liczby.Length - 1;
+       int wynik = -1;
+
+       while (lewy <= prawy)
+       {
+           int srodek = lewy + (prawy - lewy) / 2;
+           if (liczby[srodek] >= szukana)
+           {
+               if (liczby[srodek] == szukana)
+               {
+                   wynik = srodek;
+               }
+               prawy = srodek - 1;
+           }
+           else
+           {
+               lewy = srodek + 1;
+           }
+       }
+       return wynik;
+   }
+   ```
+
+3. Dla porządku malejącego zmień kierunek przesuwania granic:
+
+   ```csharp
+   static int SzukajMalejaco(int[] liczby, int szukana)
+   {
+       int lewy = 0;
+       int prawy = liczby.Length - 1;
+       while (lewy <= prawy)
+       {
+           int srodek = lewy + (prawy - lewy) / 2;
+           if (liczby[srodek] == szukana)
+           {
+               return srodek;
+           }
+
+           if (liczby[srodek] > szukana)
+           {
+               lewy = srodek + 1;
+           }
+           else
+           {
+               prawy = srodek - 1;
+           }
+       }
+       return -1;
+   }
+   ```
+
+4. Poniższe metody liczą porównania elementu z szukaną wartością. Binarne wyszukiwanie może wykonać do dwóch takich porównań w jednej iteracji:
+
+   ```csharp
+   static int Liniowo(int[] liczby, int szukana, out int porownania)
+   {
+       porownania = 0;
+       for (int indeks = 0; indeks < liczby.Length; indeks++)
+       {
+           porownania++;
+           if (liczby[indeks] == szukana)
+           {
+               return indeks;
+           }
+       }
+       return -1;
+   }
+
+   static int Binarnie(int[] liczby, int szukana, out int porownania)
+   {
+       int lewy = 0;
+       int prawy = liczby.Length - 1;
+       porownania = 0;
+       while (lewy <= prawy)
+       {
+           int srodek = lewy + (prawy - lewy) / 2;
+           porownania++;
+           if (liczby[srodek] == szukana)
+           {
+               return srodek;
+           }
+
+           porownania++;
+           if (liczby[srodek] < szukana)
+           {
+               lewy = srodek + 1;
+           }
+           else
+           {
+               prawy = srodek - 1;
+           }
+       }
+       return -1;
+   }
+
+   foreach (int n in new[] { 10, 1_000, 1_000_000 })
+   {
+       int[] dane = Enumerable.Range(0, n).ToArray();
+       _ = Liniowo(dane, n, out int porownaniaLiniowe);
+       _ = Binarnie(dane, n, out int porownaniaBinarne);
+       Console.WriteLine($"n={n}: liniowo {porownaniaLiniowe}, binarnie {porownaniaBinarne}");
+   }
+   ```
+
+   Dla nieobecnej wartości większej od wszystkich elementów wyszukiwanie liniowe wykona `n` porównań. Binarne wykona około `2 log2(n)` porównań elementu z kluczem (np. około `40` dla miliona elementów). W praktyce trzeba też uwzględnić koszt wcześniejszego sortowania i utrzymywania danych w porządku.
 
 ## Laboratorium
 

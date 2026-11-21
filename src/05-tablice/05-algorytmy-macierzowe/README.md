@@ -107,7 +107,7 @@ flowchart LR
 
 Projekt [Kod/Transformacja/Program.cs](Kod/Transformacja/Program.cs) wykonuje sumy wierszy i kolumn, transpozycję, filtr średniej na małej macierzy obrazu oraz transformację punktów sześcianu. Jest to przykład połączenia tablic wielowymiarowych z biblioteką `System.Numerics`.
 
-## Zadania
+## Zadania do samodzielnego rozwiązania
 
 1. Zaimplementuj mnożenie dwóch macierzy `double[,]` z kontrolą zgodności wymiarów.
 2. Napisz filtr medianowy `3 x 3` i porównaj go ze średnią dla macierzy zawierającej pojedynczy zakłócony piksel.
@@ -115,11 +115,144 @@ Projekt [Kod/Transformacja/Program.cs](Kod/Transformacja/Program.cs) wykonuje su
 4. Zastosuj transformację skalowania, obrotu i przesunięcia do ośmiu wierzchołków prostopadłościanu.
 5. Oblicz największą wartość w każdym wierszu i zaznacz jej współrzędne.
 
-### Rozwiązania i wyjaśnienia
+### Rozwiązania
 
-Mnożenie wymaga trzech pętli i akumulatora `wynik[wiersz, kolumna]`. Przed utworzeniem wyniku sprawdź `lewa.GetLength(1) == prawa.GetLength(0)`. Filtr medianowy zbiera istniejące wartości sąsiadów do tablicy 1D, sortuje ją przez `Array.Sort` i wybiera środkowy element; jest odporniejszy na pojedynczy skok wartości niż średnia.
+1. Wynik mnożenia ma rozmiar `lewa.GetLength(0) x prawa.GetLength(1)`. Metoda odrzuca niezgodne wymiary:
 
-Przy kącie `90` stopni warto zweryfikować wynik przez tolerancję, np. `MathF.Abs(wynik.X) < 0.001f`, zamiast porównania `wynik.X == 0`. Przy transformacji prostopadłościanu wszystkie wierzchołki muszą przejść przez tę samą macierz, aby zachować spójność modelu.
+   ```csharp
+   static double[,] Pomnoz(double[,] lewa, double[,] prawa)
+   {
+       int wiersze = lewa.GetLength(0);
+       int wspolnyWymiar = lewa.GetLength(1);
+       if (wspolnyWymiar != prawa.GetLength(0))
+       {
+           throw new ArgumentException("Liczba kolumn lewej macierzy musi równać się liczbie wierszy prawej.");
+       }
+
+       int kolumny = prawa.GetLength(1);
+       double[,] wynik = new double[wiersze, kolumny];
+       for (int wiersz = 0; wiersz < wiersze; wiersz++)
+       {
+           for (int kolumna = 0; kolumna < kolumny; kolumna++)
+           {
+               for (int indeks = 0; indeks < wspolnyWymiar; indeks++)
+               {
+                   wynik[wiersz, kolumna] += lewa[wiersz, indeks] * prawa[indeks, kolumna];
+               }
+           }
+       }
+       return wynik;
+   }
+   ```
+
+2. Filtr pomija współrzędne poza obrazem, sortuje wartości z danego sąsiedztwa i wybiera górną medianę, gdy ich liczba jest parzysta:
+
+   ```csharp
+   static int[,] FiltrMedianowy(int[,] obraz)
+   {
+       int wiersze = obraz.GetLength(0);
+       int kolumny = obraz.GetLength(1);
+       int[,] wynik = new int[wiersze, kolumny];
+
+       for (int y = 0; y < wiersze; y++)
+       {
+           for (int x = 0; x < kolumny; x++)
+           {
+               List<int> sasiedzi = new();
+               for (int dy = -1; dy <= 1; dy++)
+               {
+                   for (int dx = -1; dx <= 1; dx++)
+                   {
+                       int ny = y + dy;
+                       int nx = x + dx;
+                       if (ny >= 0 && ny < wiersze && nx >= 0 && nx < kolumny)
+                       {
+                           sasiedzi.Add(obraz[ny, nx]);
+                       }
+                   }
+               }
+
+               sasiedzi.Sort();
+               wynik[y, x] = sasiedzi[sasiedzi.Count / 2];
+           }
+       }
+       return wynik;
+   }
+   ```
+
+   Dla obrazu `{{10, 10, 10}, {10, 255, 10}, {10, 10, 10}}` środkowy piksel po filtrze medianowym ma wartość `10`; filtr średniej da w środku około `37`. Mediana ogranicza wpływ pojedynczego jasnego zakłócenia.
+
+3. Obrót punktu `(x, y, z)` o 90° wokół osi Z daje `(-y, x, z)`:
+
+   ```csharp
+   Vector3[] punkty =
+   {
+       new(1, 0, 0), new(0, 1, 0),
+       new(-1, 0, 0), new(0, -1, 0)
+   };
+
+   Vector3[] obrocone = new Vector3[punkty.Length];
+   for (int indeks = 0; indeks < punkty.Length; indeks++)
+   {
+       Vector3 punkt = punkty[indeks];
+       obrocone[indeks] = new Vector3(-punkt.Y, punkt.X, punkt.Z);
+   }
+   ```
+
+   Na przykład `(1, 0, 0)` przechodzi w `(0, 1, 0)`.
+
+4. Utwórz osiem wierzchołków, zbuduj jedną macierz transformacji i zastosuj ją do każdego punktu:
+
+   ```csharp
+   Vector3[] wierzcholki =
+   {
+       new(-1, -1, -1), new(1, -1, -1), new(-1, 1, -1), new(1, 1, -1),
+       new(-1, -1, 1), new(1, -1, 1), new(-1, 1, 1), new(1, 1, 1)
+   };
+   Matrix4x4 transformacja =
+       Matrix4x4.CreateScale(2, 1, 1) *
+       Matrix4x4.CreateRotationZ(MathF.PI / 2) *
+       Matrix4x4.CreateTranslation(10, 5, 0);
+
+   Vector3[] wynik = new Vector3[wierzcholki.Length];
+   for (int indeks = 0; indeks < wierzcholki.Length; indeks++)
+   {
+       wynik[indeks] = Vector3.Transform(wierzcholki[indeks], transformacja);
+   }
+   ```
+
+   W tej kolejności punkt jest skalowany, obracany, a następnie przesuwany. Ta sama macierz utrzymuje spójność wszystkich wierzchołków.
+
+5. Zapisuj maksimum i jego kolumnę osobno dla każdego wiersza. Aktualizacja tylko przy `>` zachowuje pierwszą pozycję w przypadku remisu:
+
+   ```csharp
+   static (int Wartosc, int Kolumna)[] MaksimaWierszy(int[,] macierz)
+   {
+       int wiersze = macierz.GetLength(0);
+       int kolumny = macierz.GetLength(1);
+       if (kolumny == 0)
+       {
+           throw new ArgumentException("Każdy wiersz musi zawierać co najmniej jedną wartość.");
+       }
+
+       var maksima = new (int Wartosc, int Kolumna)[wiersze];
+       for (int wiersz = 0; wiersz < wiersze; wiersz++)
+       {
+           int kolumnaMaksimum = 0;
+           for (int kolumna = 1; kolumna < kolumny; kolumna++)
+           {
+               if (macierz[wiersz, kolumna] > macierz[wiersz, kolumnaMaksimum])
+               {
+                   kolumnaMaksimum = kolumna;
+               }
+           }
+           maksima[wiersz] = (macierz[wiersz, kolumnaMaksimum], kolumnaMaksimum);
+       }
+       return maksima;
+   }
+   ```
+
+   Współrzędne maksimum to `[wiersz, wynik[wiersz].Kolumna]`. Wybór `>` zamiast `>=` zwraca pierwsze maksimum w wierszu.
 
 ## Laboratorium
 
