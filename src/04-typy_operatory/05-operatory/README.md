@@ -72,13 +72,28 @@ Console.WriteLine(poprawny && parzysty ? "Poprawny i parzysty" : "Warunek nie je
 2. Sprawdź, czy rok jest przestępny według reguły: podzielny przez 400 albo podzielny przez 4 i niepodzielny przez 100.
 3. Dla trzech liczb sprawdź, czy przynajmniej dwie są równe.
 
-Rozwiązanie zadania 2:
+### Rozwiązania
 
 ```csharp
+// 1. Pole i obwód prostokąta:
+double dlugosc = 5;
+double szerokosc = 3;
+double pole = dlugosc * szerokosc; // 15
+double obwod = 2 * (dlugosc + szerokosc); // 16
+
+// 2. Rok przestępny:
+int rok = 2024;
 bool przestepny = rok % 400 == 0 || (rok % 4 == 0 && rok % 100 != 0);
+// 2000 i 2024 są przestępne; 1900 i 2023 nie są.
+
+// 3. Co najmniej dwie spośród trzech liczb są równe:
+int a = 4;
+int b = 4;
+int c = 7;
+bool coNajmniejDwieRowne = a == b || a == c || b == c; // true
 ```
 
-Nawiasy pokazują grupę warunków i chronią przed pomyłką w odczytaniu reguły.
+W zadaniu 2 nawiasy grupują warunek „podzielny przez 4 i niepodzielny przez 100”; rok podzielny przez 400 jest wyjątkiem od tej reguły.
 
 ## Laboratorium
 

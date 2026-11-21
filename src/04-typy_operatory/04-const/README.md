@@ -53,7 +53,30 @@ bool poprawne = punkty >= MinimumPunktow && punkty <= MaksimumPunktow;
 2. Zastąp magiczne liczby w programie punktów nazwanymi stałymi.
 3. Spróbuj zadeklarować `const int Rok = DateTime.Now.Year` i wyjaśnij błąd kompilacji.
 
-`DateTime.Now.Year` jest znane dopiero podczas działania programu, więc nie może być inicjalizatorem `const`. Użyj zwykłej zmiennej albo `static readonly`, jeśli omawiany projekt ma już klasy.
+### Rozwiązania
+
+1. Dla promienia `2` pole wynosi około `12.566370614359172`:
+
+   ```csharp
+   const double Pi = 3.141592653589793;
+   double promien = 2;
+   double pole = Pi * promien * promien;
+   Console.WriteLine(pole);
+   ```
+
+2. Zamiast porównywać bezpośrednio z magicznymi liczbami, nazwij granice:
+
+   ```csharp
+   const int MinimumPunktow = 0;
+   const int MaksimumPunktow = 100;
+   bool poprawne = punkty >= MinimumPunktow && punkty <= MaksimumPunktow;
+   ```
+
+3. `DateTime.Now.Year` jest znane dopiero podczas działania programu, więc nie może być inicjalizatorem `const`. Użyj zwykłej zmiennej albo `static readonly`, jeśli omawiany projekt ma już klasy:
+
+   ```csharp
+   int rok = DateTime.Now.Year;
+   ```
 
 ## Laboratorium
 

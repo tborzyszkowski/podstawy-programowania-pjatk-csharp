@@ -104,12 +104,23 @@ flowchart LR
 2. Dodaj nawiasy do warunku „pełnoletni z biletem albo opiekun”.
 3. Zapisz wyrażenie ceny brutto tak, aby najpierw dodać dostawę do netto, a potem zastosować VAT.
 
-Wyniki zadania 1 to odpowiednio `16`, `36`, `8` i `2`. Rozwiązania zadań 2-3:
+### Rozwiązania
 
 ```csharp
+// 1. Wyniki w podanej kolejności: 16, 36, 8, 2.
+int pierwszy = 10 + 2 * 3;
+int drugi = (10 + 2) * 3;
+int trzeci = 20 / 5 * 2;
+int czwarty = 20 / (5 * 2);
+
+// 2. Pełnoletni z biletem albo z opiekunem:
 bool mozeWejsc = (wiek >= 18 && maBilet) || maOpiekuna;
+
+// 3. Najpierw dodaj dostawę do kwoty netto, potem nalicz VAT:
 decimal brutto = (netto + dostawa) * (1 + stawkaVat);
 ```
+
+W wyrażeniu `20 / 5 * 2` dzielenie i mnożenie mają ten sam priorytet, więc są wykonywane od lewej do prawej: `(20 / 5) * 2 = 8`. W `20 / (5 * 2)` nawias wymusza najpierw mnożenie i wynik to `2`.
 
 ## Laboratorium i debugowanie
 

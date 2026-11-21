@@ -128,7 +128,31 @@ Projekt [Kod/Liczby/Program.cs](Kod/Liczby/Program.cs) pokazuje wszystkie trzy r
 4. Oblicz odstęp między `1` a następną wartością dla `float` i `double`. Porównaj go z `float.Epsilon` oraz `double.Epsilon`.
 5. Sprawdź odstępy przy `0`, `1` i `float.MaxValue`. Wyjaśnij, dlaczego nie są jednakowe.
 
-Rozwiązanie: mieszkańcy zwykle `int` lub `long`, cena `decimal`, temperatura `double`, a rozmiar pojedynczego bajtu `byte` lub większy typ całkowity. `5 / 2` wykonuje dzielenie całkowite i daje `2`; obecność `double` lub `decimal` zmienia rodzaj dzielenia.
+### Rozwiązania
+
+1. Mieszkańcy kraju: `int` albo `long`, zależnie od przewidywanej liczby; cena: `decimal`; temperatura: zwykle `double`; pojedynczy bajt: `byte`. Dla całkowitego rozmiaru pliku użyj `long`, jeśli może przekroczyć zakres `int`.
+2. `5 / 2` daje `2`, bo oba operandy są całkowite. `5 / 2.0` i `5m / 2m` dają `2.5`, bo co najmniej jeden operand jest odpowiednio typu `double` lub `decimal`.
+3. Przykład:
+
+   ```csharp
+   double sumaDouble = 0.1 + 0.2;
+   decimal sumaDecimal = 0.1m + 0.2m;
+   Console.WriteLine(sumaDouble == 0.3); // False
+   Console.WriteLine(sumaDecimal == 0.3m); // True
+   ```
+
+   `0.1` i `0.2` nie mają dokładnego, skończonego zapisu binarnego; `0.1m` i `0.2m` są dokładne w `decimal`.
+4. Odstęp nad `1` można obliczyć tak:
+
+   ```csharp
+   double epsilonFloat = MathF.BitIncrement(1f) - 1f;
+   double epsilonDouble = Math.BitIncrement(1d) - 1d;
+   Console.WriteLine(epsilonFloat); // około 1,1920929E-07
+   Console.WriteLine(epsilonDouble); // około 2,220446049250313E-16
+   Console.WriteLine(float.Epsilon); // około 1,40129846E-45: krok od zera
+   Console.WriteLine(double.Epsilon); // około 4,94065646E-324: krok od zera
+   ```
+5. `BitIncrement(0)` pokazuje najmniejszy dodatni krok, a różnica pomiędzy `1` i `BitIncrement(1)` pokazuje krok przy jedynce. Przy `float.MaxValue` odstęp od poprzedniej wartości wynosi około `2,02824096E+31`; `BitIncrement(float.MaxValue)` daje nieskończoność. Odstępy rosną wraz z wartością, ponieważ wykładnik skaluje reprezentację.
 
 ## Laboratorium
 

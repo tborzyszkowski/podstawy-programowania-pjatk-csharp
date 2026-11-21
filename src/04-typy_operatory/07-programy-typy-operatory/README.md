@@ -61,11 +61,75 @@ flowchart TD
 
 ### Rozwiązania i wyjaśnienia
 
-1. Klasyfikację BMI wykonaj po sprawdzeniu `masa > 0 && wzrost > 0`; granice zapisuj w nazwanych stałych.
-2. Najpierw oblicz `nettoPoRabacie`, a następnie `brutto = nettoPoRabacie * (1 + Vat)`. Kolejność ma znaczenie.
-3. Dzień oblicz przez `sekundy / 86_400`, a resztę pozostaw do obliczenia godzin przez `% 86_400`.
-4. Użyj `int.TryParse` i warunku `okres > 0`, zanim wykonasz obliczenia.
-5. Obwód to `a + b + c`, a równoboczność wymaga `a == b && b == c` po pozytywnej walidacji trójkąta.
+1. Najpierw odrzuć niedodatnią masę lub wzrost, a potem oblicz BMI i przypisz kategorię. Przykładowe granice są orientacyjne dla dorosłych:
+
+   ```csharp
+   const double Niedowaga = 18.5;
+   const double PrawidlowaMasa = 25.0;
+   const double Nadwaga = 30.0;
+
+   if (masa <= 0 || wzrost <= 0)
+   {
+       Console.WriteLine("Masa i wzrost muszą być dodatnie.");
+   }
+   else
+   {
+       double bmi = masa / (wzrost * wzrost);
+       string kategoria = bmi < Niedowaga ? "niedowaga"
+           : bmi < PrawidlowaMasa ? "prawidłowa masa"
+           : bmi < Nadwaga ? "nadwaga"
+           : "otyłość";
+       Console.WriteLine($"BMI: {bmi:F1}, kategoria: {kategoria}");
+   }
+   ```
+
+2. Rabat oblicz od sumy netto, jeśli przekracza próg, a VAT nalicz dopiero po rabacie:
+
+   ```csharp
+   const decimal ProgRabatu = 500m;
+   const decimal Rabat = 0.10m;
+   const decimal Vat = 0.23m;
+
+   decimal sumaNetto = cenaNetto * ilosc;
+   decimal nettoPoRabacie = sumaNetto > ProgRabatu
+       ? sumaNetto * (1 - Rabat)
+       : sumaNetto;
+   decimal brutto = nettoPoRabacie * (1 + Vat);
+   ```
+
+3. Dla nieujemnej liczby sekund:
+
+   ```csharp
+   int dni = sekundy / 86_400;
+   int pozostaleSekundy = sekundy % 86_400;
+   int godziny = pozostaleSekundy / 3_600;
+   pozostaleSekundy %= 3_600;
+   int minuty = pozostaleSekundy / 60;
+   int resztaSekund = pozostaleSekundy % 60;
+   ```
+
+4. Parsowanie musi się powieść, a okres musi być dodatni, zanim użyjesz go w obliczeniach:
+
+   ```csharp
+   if (int.TryParse(Console.ReadLine(), out int okres) && okres > 0)
+   {
+       Console.WriteLine($"Okres: {okres}");
+   }
+   else
+   {
+       Console.WriteLine("Podaj dodatnią liczbę całkowitą.");
+   }
+   ```
+
+5. Po walidacji trójkąta oblicz obwód i sprawdź równość boków:
+
+   ```csharp
+   double obwod = a + b + c;
+   bool rownoboczny = a == b && b == c;
+   Console.WriteLine($"Obwód: {obwod}, równoboczny: {rownoboczny}");
+   ```
+
+   Przy bokach wczytywanych jako wyniki obliczeń zmiennoprzecinkowych zamiast dokładnego `==` zastosuj porównanie z tolerancją.
 
 ## Laboratorium i debugowanie
 

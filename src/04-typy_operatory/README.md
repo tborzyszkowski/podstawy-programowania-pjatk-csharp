@@ -58,6 +58,116 @@ Debugowanie w Visual Studio Code uruchamia się przez `F5`, a krokowanie przez `
 - Nazwij stałe zamiast powtarzać liczby w wyrażeniach. Porównaj wynik przed i po dodaniu nawiasów oraz po zmianie typu operandu.
 - W opisie rozwiązania wskaż, gdzie występuje konwersja niejawna, jawna albo bezpieczna konwersja przez `TryParse`.
 
+### Przykładowe rozwiązania zadań przekrojowych
+
+Poniższe fragmenty pokazują jedną z możliwych dróg rozwiązania. Wartości wejściowe w każdym przypadku należy testować również z danymi niepoprawnymi i granicznymi.
+
+1. **Kalkulator zamówienia** — konwersja wejścia przez `TryParse`, stałe dla reguł i rabat naliczany przed VAT:
+
+   ```csharp
+   const decimal Vat = 0.23m;
+   const decimal ProgRabatu = 500m;
+   const decimal Rabat = 0.10m;
+
+   bool poprawnaCena = decimal.TryParse(Console.ReadLine(), out decimal cena) && cena > 0;
+   bool poprawnaIlosc = int.TryParse(Console.ReadLine(), out int ilosc) && ilosc > 0;
+
+   if (poprawnaCena && poprawnaIlosc)
+   {
+       decimal netto = cena * ilosc;
+       decimal nettoPoRabacie = netto > ProgRabatu ? netto * (1 - Rabat) : netto;
+       decimal brutto = nettoPoRabacie * (1 + Vat);
+       Console.WriteLine($"Netto po rabacie: {nettoPoRabacie:F2}, brutto: {brutto:F2}");
+   }
+   else
+   {
+       Console.WriteLine("Podaj dodatnią cenę i dodatnią liczbę sztuk.");
+   }
+   ```
+
+2. **Konwerter temperatury** — oba wejścia sprawdź metodami `TryParse`, a skalę porównuj bez uwzględniania wielkości liter:
+
+   ```csharp
+   bool poprawnaTemperatura = double.TryParse(Console.ReadLine(), out double temperatura);
+   bool poprawnaSkala = char.TryParse(Console.ReadLine(), out char skala);
+   bool skalaCelsjusza = char.ToUpperInvariant(skala) == 'C';
+   bool skalaFahrenheita = char.ToUpperInvariant(skala) == 'F';
+
+   if (poprawnaTemperatura && poprawnaSkala && (skalaCelsjusza || skalaFahrenheita))
+   {
+       double wynik = skalaCelsjusza
+           ? temperatura * 9 / 5 + 32
+           : (temperatura - 32) * 5 / 9;
+       Console.WriteLine(wynik);
+   }
+   else
+   {
+       Console.WriteLine("Podaj poprawną temperaturę oraz skalę C albo F.");
+   }
+   ```
+
+3. **Analizator trzech wyników** — rzutuj przed dodawaniem, aby nie dopuścić do przepełnienia sumy typu `int`; dziel przez `3.0`, aby otrzymać średnią ułamkową:
+
+   ```csharp
+   bool poprawnyPierwszy = int.TryParse(Console.ReadLine(), out int pierwszy);
+   bool poprawnyDrugi = int.TryParse(Console.ReadLine(), out int drugi);
+   bool poprawnyTrzeci = int.TryParse(Console.ReadLine(), out int trzeci);
+   bool poprawne = poprawnyPierwszy && poprawnyDrugi && poprawnyTrzeci;
+
+   if (poprawne)
+   {
+       double srednia = ((double)pierwszy + drugi + trzeci) / 3;
+       bool wZakresie = srednia >= 0 && srednia <= 100;
+       Console.WriteLine($"Średnia: {srednia}, w zakresie: {wZakresie}");
+   }
+   else
+   {
+       Console.WriteLine("Podaj trzy poprawne liczby całkowite.");
+   }
+   ```
+
+4. **Konwerter odległości** — przykład przyjmuje nieujemną odległość w milimetrach i rozkłada ją na kilometry, metry oraz pozostałe milimetry:
+
+   ```csharp
+   if (long.TryParse(Console.ReadLine(), out long milimetry) && milimetry >= 0)
+   {
+       long kilometry = milimetry / 1_000_000;
+       long pozostaleMilimetry = milimetry % 1_000_000;
+       long metry = pozostaleMilimetry / 1_000;
+       long reszta = pozostaleMilimetry % 1_000;
+       Console.WriteLine($"{kilometry} km, {metry} m, {reszta} mm");
+
+       try
+       {
+           int kilometryJakoInt = checked((int)kilometry);
+           Console.WriteLine($"Kilometry jako int: {kilometryJakoInt}");
+       }
+       catch (OverflowException)
+       {
+           Console.WriteLine("Liczba metrów nie mieści się w typie int.");
+       }
+   }
+   else
+   {
+       Console.WriteLine("Podaj nieujemną odległość w milimetrach mieszczącą się w long.");
+   }
+   ```
+
+5. **Wyrażenia mieszanych typów** — dodawanie ma niższy priorytet niż mnożenie; `int` może być niejawnie konwertowany do `double` albo `decimal`, ale `double` i `decimal` nie łączą się automatycznie:
+
+   ```csharp
+   int liczba = 5;
+   double pomiar = 2.5;
+   double wynikBezNawiasow = liczba + pomiar * 2; // 10
+   double wynikZNawiasami = (liczba + pomiar) * 2; // 15
+
+   decimal cena = 1.25m;
+   int sztuki = 3;
+   decimal wartosc = cena * sztuki; // 3.75m; int jest niejawnie konwertowany do decimal
+   ```
+
+   Wyrażenie `pomiar + cena` nie kompiluje się, ponieważ C# nie wybiera automatycznie między `double` a `decimal`. Wybierz jeden typ odpowiedni dla obliczenia; jawnie konwertuj tylko wtedy, gdy świadomie akceptujesz możliwą zmianę precyzji.
+
 ## Źródła
 
 - [Built-in types](https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/built-in-types),

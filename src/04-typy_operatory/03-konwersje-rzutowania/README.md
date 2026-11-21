@@ -77,14 +77,44 @@ catch (OverflowException)
 2. Wczytaj dwie liczby tekstowe przez `TryParse` i oblicz ich średnią jako `double`.
 3. Zademonstruj różnicę między rzutowaniem `double` na `int` a zaokrągleniem przez `Math.Round`.
 
-Rozwiązanie zadania 3:
+### Rozwiązania
 
 ```csharp
-double wartosc = 12.8;
-int obciecie = (int)wartosc;
-int zaokraglenie = (int)Math.Round(wartosc);
+// 1. Najpierw sprawdź, czy tekst jest liczbą i czy mieści się w zakresie int.
+if (double.TryParse(Console.ReadLine(), out double wartosc) &&
+    double.IsFinite(wartosc) &&
+    wartosc >= int.MinValue &&
+    wartosc <= int.MaxValue)
+{
+    int czescCalkowita = (int)wartosc; // obcięcie części ułamkowej w stronę zera
+    Console.WriteLine(czescCalkowita);
+}
+else
+{
+    Console.WriteLine("Niepoprawna liczba albo wartość poza zakresem int.");
+}
+
+// 2. TryParse sprawdza każde wejście; rzutowanie na double przed dzieleniem
+//    zapobiega dzieleniu całkowitemu.
+if (int.TryParse(Console.ReadLine(), out int pierwsza) &&
+    int.TryParse(Console.ReadLine(), out int druga))
+{
+    double srednia = ((double)pierwsza + druga) / 2;
+    Console.WriteLine($"Średnia: {srednia}");
+}
+else
+{
+    Console.WriteLine("Podaj dwie poprawne liczby całkowite.");
+}
+
+// 3. Rzutowanie obcina, a Math.Round zaokrągla.
+double wartoscDoPorownania = 12.8;
+int obciecie = (int)wartoscDoPorownania; // 12
+int zaokraglenie = (int)Math.Round(wartoscDoPorownania); // 13
 Console.WriteLine($"Obcięcie: {obciecie}, zaokrąglenie: {zaokraglenie}");
 ```
+
+Domyślne `Math.Round` zaokrągla połówki do najbliższej liczby parzystej; jeśli wymagane jest zaokrąglanie połówek w górę, wybierz jawnie `MidpointRounding.AwayFromZero`.
 
 ## Laboratorium
 

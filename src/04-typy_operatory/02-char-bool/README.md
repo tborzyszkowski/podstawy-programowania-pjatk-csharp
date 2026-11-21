@@ -71,12 +71,27 @@ Console.WriteLine(maZgode ? "zgoda" : "brak zgody");
 2. Wczytaj trzy odpowiedzi `tak`/`nie` i sprawdź, czy wszystkie są pozytywne.
 3. Wypisz kod Unicode znaku i wyjaśnij wynik rzutowania `char` na `int`.
 
-Rozwiązanie zadania 1:
+### Rozwiązania
 
 ```csharp
+// 1. Dla podstawowych liter alfabetu łacińskiego:
 bool malaLitera = znak >= 'a' && znak <= 'z';
 Console.WriteLine(malaLitera ? "mała litera" : "to nie jest mała litera");
+
+// 2. Odpowiedzi są tekstami odczytanymi z wejścia:
+bool wszystkieTak =
+    string.Equals(odpowiedz1, "tak", StringComparison.OrdinalIgnoreCase) &&
+    string.Equals(odpowiedz2, "tak", StringComparison.OrdinalIgnoreCase) &&
+    string.Equals(odpowiedz3, "tak", StringComparison.OrdinalIgnoreCase);
+Console.WriteLine(wszystkieTak ? "wszystkie odpowiedzi są pozytywne" : "co najmniej jedna odpowiedź nie jest pozytywna");
+
+// 3. Rzutowanie char na int pokazuje wartość jednostki kodu UTF-16:
+char znakUnicode = '\u03A9'; // Ω
+int kod = znakUnicode;
+Console.WriteLine($"Znak: {znakUnicode}, wartość jednostki UTF-16: {kod}"); // 937
 ```
+
+W zadaniu 3 dla `'A'` wynikiem jest `65`. `char` przechowuje jednostkę kodu UTF-16, więc rzutowanie nie zawsze oznacza kod całego znaku Unicode — niektóre znaki wymagają pary `char`.
 
 ## Laboratorium
 
