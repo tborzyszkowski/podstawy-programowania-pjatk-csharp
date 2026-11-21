@@ -46,6 +46,64 @@ Console.WriteLine(c + d == 0.3m); // true dla tych wartości dziesiętnych
 
 Dla `double` porównuj wartości z tolerancją, gdy wynik jest obliczeniem przybliżonym. Dla pieniędzy używaj `decimal` i ustal zasady zaokrąglania.
 
+## Oś liczbowa: gęstość wartości i epsilon komputerowy
+
+Typy całkowite rozmieszczają wartości równomiernie: między kolejnymi liczbami zawsze jest odstęp `1`. Wszystkie wartości, które mieszczą się w zakresie typu, są dokładne. Typy bez znaku (`byte`, `ushort`, `uint`, `ulong`) zaczynają się od zera, więc nie mają ujemnej części osi. Na krańcach nie ma kolejnej wartości tego samego typu: w kontekście `checked` przepełnienie zgłasza `OverflowException`, a w kontekście `unchecked` wartość całkowita zawija się na drugi koniec zakresu.
+
+Dla `float` i `double` oś liczbowa nie jest równomierna. W pobliżu zera występują bardzo małe liczby podnormalne (subnormalne), a dla większych wartości odstępy między kolejnymi liczbami rosną. W przedziale `[2^e, 2^(e+1))` odstęp dla liczb normalnych wynosi:
+
+- `float`: `2^(e - 23)`, ponieważ ma 24 bity precyzji (23 bity zapisanej części ułamkowej i ukrytą jedynkę),
+- `double`: `2^(e - 52)`, ponieważ ma 53 bity precyzji (52 bity zapisanej części ułamkowej i ukrytą jedynkę).
+
+Na przykład w przedziale `[1, 2)` kolejne wartości typu `float` dzieli `2^-23`, a typu `double` `2^-52`. W przedziale zaczynającym się od `2^10` odstęp jest `2^10` razy większy. Po stronie ujemnej odstępy są analogiczne. Zera `+0` i `-0` mają osobne reprezentacje, ale porównują się jako równe.
+
+### Epsilon komputerowy
+
+W tym materiale przez epsilon komputerowy dla typu rzeczywistego rozumiemy odstęp od `1` do następnej większej liczby, którą można zapisać w tym typie:
+
+```text
+epsilon przy 1 = następna reprezentowalna wartość po 1 - 1
+```
+
+W C# można znaleźć tę wartość przez `MathF.BitIncrement(1f)` albo `Math.BitIncrement(1d)`. Nie należy mylić jej z `float.Epsilon` i `double.Epsilon`. Te stałe oznaczają najmniejszą dodatnią wartość podnormalną, czyli pierwszy krok od zera, a nie odstęp w pobliżu `1`.
+
+| Typ | Pierwsza dodatnia wartość od zera | Odstęp nad `1` | Odstęp pod `1` | Największa skończona wartość |
+| --- | ---: | ---: | ---: | ---: |
+| `float` | `2^-149` ≈ `1,40129846e-45` | `2^-23` ≈ `1,19209290e-7` | `2^-24` ≈ `5,96046448e-8` | ≈ `3,40282347e38` |
+| `double` | `2^-1074` ≈ `4,94065646e-324` | `2^-52` ≈ `2,22044605e-16` | `2^-53` ≈ `1,11022302e-16` | ≈ `1,79769313e308` |
+| `decimal` | `1e-28` | `1e-28` w najbliższym otoczeniu `1` | `1e-28` w najbliższym otoczeniu `1` | `79 228 162 514 264 337 593 543 950 335` |
+
+Wartość `float.Epsilon` lub `double.Epsilon` opisuje zatem odległość od zera. W części normalnej `float` i `double` zachowują mniej więcej stałą precyzję względną, ale ich precyzja bezwzględna zależy od położenia na osi. Granica między liczbami podnormalnymi a normalnymi to odpowiednio `2^-126` dla `float` i `2^-1022` dla `double`; poniżej niej odstęp jest stały aż do zera.
+
+### Cecha i mantysa
+
+Dla normalnych liczb binarnych zapis można uprościć do postaci:
+
+```text
+(-1)^znak × (1 + ułamek_mantysy) × 2^(cecha - bias)
+```
+
+`Znak` określa stronę osi, `cecha` (wykładnik) mówi o rzędzie wielkości, a mantysa — dokładniej: znacząca część liczby — przechowuje cyfry wartości. W liczbach normalnych pierwsza jedynka mantysy nie jest zapisywana, tylko zakładana, dlatego `float` ma 24, a `double` 53 bity precyzji, mimo że zapisane pola ułamkowe mają odpowiednio 23 i 52 bity.
+
+| Typ | Znak | Pole cechy | Bias cechy | Zapisana część mantysy | Precyzja z ukrytą jedynką |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| `float` | 1 bit | 8 bitów | 127 | 23 bity | 24 bity |
+| `double` | 1 bit | 11 bitów | 1023 | 52 bity | 53 bity |
+
+Pole cechy złożone z samych zer służy do zapisu zera i liczb podnormalnych, a złożone z samych jedynek — do zapisu nieskończoności i `NaN`. Dlatego `float` i `double` mają wartości `PositiveInfinity`, `NegativeInfinity` oraz `NaN`, które nie są zwykłymi punktami skończonej osi liczbowej.
+
+### Krańce dziedziny
+
+Przy zbliżaniu się do `float.MaxValue` lub `double.MaxValue` odstępy są już bardzo duże. Następna reprezentowalna wartość po największej skończonej wartości to `PositiveInfinity`; po analogicznym przejściu poniżej `float.MinValue` lub `double.MinValue` otrzymujemy `NegativeInfinity`. Przepełnienie arytmetyki zmiennoprzecinkowej daje nieskończoność, a nie `OverflowException`. `float.MinValue` i `double.MinValue` oznaczają najbardziej ujemne wartości skończone, a nie najmniejsze dodatnie wartości — te ostatnie opisują `float.Epsilon` i `double.Epsilon`.
+
+`decimal` działa inaczej. Nie jest binarnym typem IEEE 754 i nie ma binarnej cechy ani mantysy. Przechowuje znak, 96-bitową liczbę całkowitą oraz skalę dziesiętną od `0` do `28`:
+
+```text
+wartość decimal = (-1)^znak × liczba_całkowita / 10^skala
+```
+
+Dzięki temu wartości takie jak `0,1m`, `0,2m` i `19,99m` są reprezentowane dokładnie, o ile mieszczą się w opisanym formacie. `1m` ma w najbliższym otoczeniu odstęp `1e-28`, a najmniejsza dodatnia wartość różna od zera również wynosi `1e-28`. Dla większych liczb maksymalna skala musi się zmniejszać, więc odstępy rosną; tuż przy `decimal.MaxValue` wynoszą `1`. `decimal` nie ma `Infinity` ani `NaN`, a operacja przekraczająca jego zakres zgłasza `OverflowException`. Nadal jest to typ skończonej precyzji — na przykład `1m / 3m` jest zaokrąglane po dostępnych 28–29 cyfrach dziesiętnych.
+
 ```mermaid
 flowchart TD
     A[Problem liczbowy] --> B{Liczba całkowita?}
@@ -70,6 +128,8 @@ Projekt [Kod/Liczby/Program.cs](Kod/Liczby/Program.cs) pokazuje wszystkie trzy r
 1. Wybierz typ dla liczby mieszkańców kraju, ceny produktu, temperatury z czujnika i liczby bajtów pliku.
 2. Sprawdź wynik `5 / 2`, `5 / 2.0` i `5m / 2m` oraz wyjaśnij różnicę.
 3. Pokaż w programie, że `double` może dać wynik z błędem zaokrąglenia, a `decimal` lepiej reprezentuje `0.1m + 0.2m`.
+4. Oblicz odstęp między `1` a następną wartością dla `float` i `double`. Porównaj go z `float.Epsilon` oraz `double.Epsilon`.
+5. Sprawdź odstępy przy `0`, `1` i `float.MaxValue`. Wyjaśnij, dlaczego nie są jednakowe.
 
 Rozwiązanie: mieszkańcy zwykle `int` lub `long`, cena `decimal`, temperatura `double`, a rozmiar pojedynczego bajtu `byte` lub większy typ całkowity. `5 / 2` wykonuje dzielenie całkowite i daje `2`; obecność `double` lub `decimal` zmienia rodzaj dzielenia.
 
@@ -80,10 +140,12 @@ dotnet build
 dotnet run
 ```
 
-Ustaw punkt przerwania przed każdym obliczeniem i obserwuj typ oraz wartość. Sprawdź skrajne wartości `int`, wynik dzielenia całkowitego i różnicę między `double` a `decimal`.
+Ustaw punkt przerwania przed każdym obliczeniem i obserwuj typ oraz wartość. Sprawdź skrajne wartości `int`, wynik dzielenia całkowitego i różnicę między `double` a `decimal`. Program pokazuje także sąsiadujące wartości przy `0` i `1`, odstęp przy największych wartościach oraz przejście od `MaxValue` do nieskończoności.
 
 ## Źródła
 
 - [Integral numeric types](https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/integral-numeric-types),
 - [Floating-point numeric types](https://learn.microsoft.com/dotnet/csharp/language-reference/builtin-types/floating-point-numeric-types),
+- [System.Math.BitIncrement](https://learn.microsoft.com/dotnet/api/system.math.bitincrement),
+- [The `decimal` type](https://learn.microsoft.com/dotnet/standard/base-types/decimal),
 - [Arithmetic operators](https://learn.microsoft.com/dotnet/csharp/language-reference/operators/arithmetic-operators).
